@@ -109,7 +109,7 @@ The rest of the script is as we have done before. The comment lines (with `#`s) 
 
 Add a line to load the Qiime module.
 
-This will be run in the `/taxonomy` subfolder:
+This will be run in the `taxonomy/` subfolder:
 
 ```
 cd ../taxonomy
@@ -135,7 +135,7 @@ In addition to the required arguments, also add the `--p-confidence` and `--p-n-
 
 Once you have completed the command, the job script is ready to go. To submit the job script to the queue:
 
-```
+```bash
 sbatch classify_nb.sl
 ```
 
@@ -169,7 +169,7 @@ Within the Qiime2 multiverse, there is a lot of downstream analyses once you hav
 
 There is a handy qiime tool to do this. It has just two required options. In the terminal, load the qiime module if it is not loaded already, and run the help message:
 
-```
+```bash
 module load QIIME2/2021.2
 
 qiime tools export --help
@@ -193,10 +193,11 @@ Options:
                         option cannot be used with Visualizations
   --help                Show this message and exit.
 ```
+{: .output}
 
 Write a bash script (not a Slurm job) to export the taxonomy classification output. You will just need to use the `--input-path` and `--output-path` arguments. For Qiime exports, the `--output-path` argument only uses a path, not a file name. You will have to rename the output after exporting. The best is to create a folder called exports in the taxonomy folder. 
 
-```
+```bash
 mkdir exports
 ```
 

@@ -10,12 +10,9 @@ keypoints:
 - "First key point. Brief Answer to questions. (FIXME)"
 ---
 
-<center> <h1>eDNA Workshop</h1> </center>
-
-
+# eDNA Workshop
 
 The primary goal of this course is to introduce students to the analysis of environmental DNA data. The set of methods that broadly has to do with the analysis of nucleic material from the environment is called <a href="https://en.wikipedia.org/wiki/Metagenomics" target="_blank" rel="noopener noreferrer"><b>Metagenomics</b></a>. Usually this refers to **shotgun metagenomics**, which utilises shotgun next-generation sequencing (NGS). However, there are several techniques used nowadays for analysing eDNA, including bait capture, qPCR, and metatranscriptomics (eRNA). This course will cover <a href="https://en.wikipedia.org/wiki/Environmental_DNA#eDNA_metabarcoding" target="_blank" rel="noopener noreferrer"><b>eDNA metabarcoding</b></a> , which involves using PCR amplification of one or a few genes on DNA extracted from environmental samples. 
-
 
 <center><img src="../fig/Applications_of_eDNA_metabarcoding.jpg" alt="eDNA figure" width="600" height="600"/></center>
 
@@ -64,7 +61,7 @@ There are six basic kinds of information that are common to all metabarcoding an
 
 The first two data types have to do with your sample data: your sequence data, and the metadata holding information about each sample. The next two are for the taxonomic references that are used to determine the species composition of the samples. 
 
-![alt text](../fig/Slide01.png)
+![core files needed for metabarcoding analyses](../fig/Slide01.png)
 
 
 
@@ -78,13 +75,13 @@ The first files are fastq and fasta files. We will process these in the next sec
 
 In Qiime the sample metadata is a simple tab-delimited file with information for each sample:
 
-![alt text](../fig/metadata_flat_view.png)
+!["sample metadata (flat view)"](../fig/metadata_flat_view.png)
 
 <br>
 
 Here is a spreadsheet view, so the different categories are clearer:
 
-![alt text](../fig/metadata_spreadsheet_view.png)
+!["sample metadata (spreadsheet view)"](../fig/metadata_spreadsheet_view.png)
 
 Now we will open the sample metadata file that we will use in this course. In JupyterHub, navigate to the docs folder. You will see a file called *sample_metadata.tsv*. Double-click on this file and it will open in a new tab on Jupyter. You will see that Jupyter recognises this file as a table, because of the `.tsv` suffix.
 
@@ -156,7 +153,7 @@ Here are the OBITools and Qiime pipelines side-by-side. Though the steps are nam
 
 For any project, it is important to organise your various files into subfolders. Through the course you will be navigating between folders to run your analyses. It may seem confusing or tedious, especially as there are only a few files. Remember that for many projects you can easily generate hundreds of files, so it is best to start with good practices from the beginning. 
 
-your `edna` folder has been copied to your home folder. It has the following subfolders:
+Your `edna` folder is located in `~/obss_2021/`. It has the following subfolders:
 
 - docs/
 - data/

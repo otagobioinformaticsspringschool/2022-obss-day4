@@ -10,9 +10,7 @@ keypoints:
 - "First key point. Brief Answer to questions. (FIXME)"
 ---
 
-# Denoising or clustering the sequences
-
-### Introduction
+## Introduction
 
 Now that our sequences have been trimmed and filtered, we can proceed to the next step, which will create a set of representative sequences. We do this by clustering all the sequences to look for biologically meaningful sequences--those that are thought to represent actual taxa, while trying to avoid differences caused by sequence or PCR errors, and remove any *chimeric* sequences.
 
@@ -35,13 +33,13 @@ Prior to clustering or denoising, we need to dereplicate our data into unique se
 
 For the first step, we will combine all of the fasta files into a single file. In the terminal, navigate to the `/data/fasta` folder:
 
-```
-$ cd ~/edna/data/fasta
+```bash
+$ cd ~/obss_2021/edna/data/fasta
 ```
 
 Now we will just concatenate all the fasta files into one using the `cat` command:
 
-```
+```bash
 $ cat *.fasta > combined.fasta
 ```
 
@@ -50,7 +48,7 @@ $ cat *.fasta > combined.fasta
 
 The next commands we will run through bash scripts, as we did with the demultiplexing and trimming. Navigate back to the `/scripts` folder and create a new script. Save this as `dereplicate_seqs.sh`
 
-```
+```bash
 $ cd ../scripts
 ```
 
@@ -62,13 +60,13 @@ Remember to add the *shebang* to the first line of the script
 
 For this and the next scripts, we will use the program <a href="https://github.com/torognes/vsearch" target="_blank" rel="noopener noreferrer"><b>VSEARCH</b></a>, so read from the `envs.sh` file as you did in the previous script.
 
-```
+```bash
 source envs.sh
 ```
 
 We will create and keep our OTU files in a separate folder, so add a line to navigate to this folder:
 
-```
+```bash
 cd ../otus
 ```
 
@@ -91,7 +89,7 @@ Note how the second command uses as input the output of the first command.
 
 To run the script, you just have to make it executable and run it, as with the `trim_qc.sh` script
 
-```
+```bash
 $ chmod a+x dereplicate_seqs.sh
 
 $ ./dereplicate_seqs.sh
@@ -101,7 +99,7 @@ $ ./dereplicate_seqs.sh
 
 To check if it worked, navigate over to the otus folder and check:
 
-```
+```bash
 $ cd ../otus
 
 $ ls
@@ -109,7 +107,7 @@ $ ls
 
 or you can just list the files from the scripts folder:
 
-```
+```bash
 $ ls ../otus
 ```
 

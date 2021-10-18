@@ -20,7 +20,7 @@ There are many possible file and data types that can be imported into Phyloseq:
 
 
 
-```R
+```r
 # load the packages
 library('phyloseq')
 library('tibble')
@@ -33,7 +33,7 @@ library('stringr')
 ```
 
 
-```R
+```r
 # set the working directory
 setwd('../plots')
 ```
@@ -43,12 +43,12 @@ setwd('../plots')
 
 
 
-```R
+```r
 import_table <- read.table('../otus/otu_frequency_table.tsv',header=TRUE,sep='\t',row.names=1, comment.char = "")
 ```
 
 
-```R
+```r
 head(import_table)
 ```
 
@@ -72,7 +72,7 @@ head(import_table)
 
 
 
-```R
+```r
 # convert to a matrix for Phyloseq
 otumat <- as.matrix(import_table)
 head(otumat)
@@ -97,9 +97,9 @@ head(otumat)
 
 
 
-```R
+```r
 # create a Phyloseq object using the function `otu_table`
-OTU = otu_table(otumat, taxa_are_rows = TRUE)
+OTU <- otu_table(otumat, taxa_are_rows = TRUE)
 head(OTU)
 ```
 
@@ -126,7 +126,7 @@ head(OTU)
 Now we will import the taxonomy table. After importing to R, we will have to split the taxonomy column into separate columns for each taxon, so that Phyloseq can recognise it.
 
 
-```R
+```r
 import_taxa <- read.table('../taxonomy/otu_taxonomy.tsv',header=TRUE,sep='\t',row.names=1)
 head(import_taxa)
 ```
@@ -153,13 +153,13 @@ head(import_taxa)
 You can see that the taxonomic lineage is in one column. We will run a pipe to split each taxonomic rank into separate columns, and also take out the Qiime-style title for each rank (e.g. 'd__'). Finally, we will convert the data frame into a matrix so it is readable by Phyloseq.
 
 
-```R
+```r
 # First we have to provide names for the new columns
 ranks <- c("kingdom","phylum","class","order","family","genus","species")
 ```
 
 
-```R
+```r
 taxonomy <- import_taxa %>%
   mutate_at('Taxon',str_replace_all, "[a-z]__","") %>%
   separate(Taxon, sep = ';', into=ranks,remove = TRUE) %>%
@@ -167,9 +167,11 @@ taxonomy <- import_taxa %>%
 head(taxonomy)
 ```
 
+```
     Warning message:
     “Expected 7 pieces. Missing pieces filled with `NA` in 13 rows [9, 13, 15, 17, 25, 26, 27, 28, 29, 30, 31, 32, 33].”
-
+```
+{: .output}
 
 
 <table class="dataframe">
@@ -190,15 +192,15 @@ head(taxonomy)
 
 
 
-```R
+```r
 # Create a taxonomy class object
-TAX = tax_table(taxonomy)
+TAX <- tax_table(taxonomy)
 ```
 
 ## Import the sample metadata
 
 
-```R
+```r
 metadata <- read.table('../docs/sample_metadata.tsv',header = T,sep='\t',row.names = 1)
 metadata
 ```
@@ -229,7 +231,7 @@ metadata
 
 
 
-```R
+```r
 # As we are not using the negative control, we will remove it
 metadata <- metadata[1:11,1:8]
 tail(metadata)
@@ -255,7 +257,7 @@ tail(metadata)
 
 
 
-```R
+```r
 # Create a Phyloseq sample_data-class
 META <- sample_data(metadata)
 ```
@@ -263,7 +265,7 @@ META <- sample_data(metadata)
 ## Import the phylogenetic tree
 
 
-```R
+```r
 otu_tree <- read.tree(file='../otus/otu_rooted_tree.nwk')
 otu_tree
 ```
@@ -281,7 +283,7 @@ otu_tree
 
 
 
-```R
+```r
 ## Let's have a look at the tree
 plot(otu_tree)
 ```
@@ -295,7 +297,7 @@ plot(otu_tree)
 Now that we have all the components, it is time to create a Phyloseq object 
 
 
-```R
+```r
 pseq <- phyloseq(OTU,TAX,META,otu_tree)
 pseq
 ```
@@ -315,7 +317,7 @@ pseq
 Now that we have our Phyloseq object, we will take a look at it. One of the first steps is to check alpha rarefaction of species richness. This is done to show that there has been sufficient sequencing to detect most species (OTUs). 
 
 
-```R
+```r
 # rarefaction
 rarecurve(t(otu_table(pseq)), step=50, cex=1)
 ```
@@ -325,7 +327,7 @@ rarecurve(t(otu_table(pseq)), step=50, cex=1)
 
 
 
-```R
+```r
 # create a bar plot of abundance
 plot_bar(pseq)
 ```
@@ -335,22 +337,24 @@ plot_bar(pseq)
 
 
 
-```R
+```r
 # some basic stats
 print(min(sample_sums(pseq)))
 print(max(sample_sums(pseq)))
 ```
 
+```
     [1] 8117
     [1] 20184
-
+```
+{: .output}
 
 ## Rarefy the data
 
 From the initial look at the data, it is obvious that the sample AS3 has about twice as many reads as any of the other samples. We can use rarefaction to simulate an even number of reads per sample. Rarefying the data is preferred for some analyses, though there is some debate. We will create a rarefied version of the Phyloseq object.
 
 
-```R
+```r
 # we will rarefy the data around 90% of the lowest sample
 pseq.rarefied <- rarefy_even_depth(pseq, rngseed=1, sample.size=0.9*min(sample_sums(pseq)), replace=F)
 ```
@@ -366,7 +370,7 @@ pseq.rarefied <- rarefy_even_depth(pseq, rngseed=1, sample.size=0.9*min(sample_s
 
 
 
-```R
+```r
 # now plot the rarefied version
 plot_bar(pseq.rarefied)
 ```
@@ -383,13 +387,13 @@ Also, below are a couple of examples of saving graphs. There are many options fo
 
 
 
-```R
+```r
 # save the phyloseq object
 saveRDS(pseq, 'fish_phyloseq.rds')
 ```
 
 
-```R
+```r
 # also save the rarefied version
 saveRDS(pseq.rarefied, 'fish_phyloseq_rarefied.rds')
 ```
@@ -400,7 +404,7 @@ saveRDS(pseq.rarefied, 'fish_phyloseq_rarefied.rds')
 
 
 
-```R
+```r
 # open a pdf file
 pdf('species_richness_plot.pdf')
 # run the plot, or add the saved one
@@ -414,7 +418,7 @@ dev.off()
 
 
 
-```R
+```r
 # there are other graphic formats that you can use
 jpeg("species_richness_plot.jpg", width = 800, height = 800)
 rarecurve(t(otu_table(pseq)), step=50, cex=1.5, col='blue',lty=2)

@@ -10,9 +10,8 @@ keypoints:
 - "First key point. Brief Answer to questions. (FIXME)"
 ---
 
-# Introduction to Qiime
 
-### Overview 
+## Overview 
 
 The Qiime2 package is an open-source system that incorporates multiple, stand-alone programs, giving you many options to run your analysis. The different programs are provided as plug-ins to provide maximum flexibility. The <a href="https://docs.qiime2.org/2021.4/" target="_blank" rel="noopener noreferrer"><b>Qiime2 docs webpage</b></a> has all the information you need to get started on processing metabarcoding data. There are multiple tutorials available, including a <a href="https://docs.qiime2.org/2021.4/tutorials/overview/" target="_blank" rel="noopener noreferrer"><b>detailed overview</b></a> of the available plugins and links to the concepts involved. 
 
@@ -87,25 +86,30 @@ And here is the same process, with exports to flat files
 
 We first need to import the files produced in this morning's lesson into the Qiime2 format so they can be processed. In the command line, we will first go to the `taxonomy` folder and load the Qiime2 module:
 
-```
+```bash
 $ pwd
+```
 
-/home/username/edna/
 ```
+/home/username/obss_2021/edna/
 ```
+{: .output}
+
+```bash
 $ cd taxonomy
 ```
->Otherwise, `cd ~/edna/taxonomy`
+
+>Otherwise, `cd ~/obss_2021/edna/taxonomy`
 
 
-```
+```bash
 $ module purge
 $ module load QIIME2/2021.2
 ```
 
 To see the options for any Qiime2 command, you can use help:
 
-```
+```bash
 $ qiime tools import --help
 ```
 
@@ -115,18 +119,17 @@ There are just a few arguments for importing files, but many possible types and 
 
 We can view those by just entering the option:
 
-```
+```bash
 $ qiime tools import --show-importable-types
 ```
 
 Sometimes it is necessary to specify the format of the input file. We can view those as well:
 
-```
+```bash
 $ qiime tools import --show-importable-formats
 ```
 
 These two arguments provide a good guide when you are trying to figure out kind of file you are importing
-
 
 
 ### Importing OTU fasta file and frequency table
@@ -136,13 +139,13 @@ Now we will write scripts to import the OTU fasta file and frequency table. Crea
 In addition to the shebang on the first line, add a line to load the qiime module:
 
 
-```
+```bash
 module load QIIME2/2021.2
 ```
 
 The script will move to the otus folder to run the command:
 
-```
+```bash
 cd ../otus
 ```
 
@@ -151,7 +154,7 @@ Now we will add the Qiime command. For this step, we will introduce a new way of
 Type the Qiime import command like this:
 
 
-```
+```bash
 qiime tools import \
   --type 'FeatureData[Sequence]' \
   --input-path otus.fasta  \
@@ -163,7 +166,7 @@ You will add a backwards slash after every line (`\`). This tells the script to 
 
 Once you have your script, save it and make it executable (REVIEW: `chmod a+x SCRIPTNAME`). Then run it in the terminal
 
-```
+```bash
 ./import_otu_to_qiime.sh
 ```
 

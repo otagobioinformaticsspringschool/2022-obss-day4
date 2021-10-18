@@ -35,22 +35,28 @@ The example dataset for today was created with single end sequencing, so there i
 In order to use our data, we will have to clean it up by removing the primers and any sequence upstream or downstream of the primers, then filtering out any sequences that are too short or of low average quality. If the data has not been split into separate files for each sample, then we will need to also *demultiplex* the raw data file. 
 
 
-To get started, navigate to the */data* subfolder. Check where you are first:
+To get started, navigate to the `data/` subfolder within the `~/obss_2021/edna/` directory. 
 
-```
+```bash
+$ cd ~/obss_2021/edna
 $ pwd
-
-/home/username/edna
 ```
+
+```
+/home/username/obss_2021/edna
+```
+{: .output}
+
+
 Assuming you are in the main directory:
 
-```
+```bash
 $ cd data
 ```
 
 and then use the `ls` command to see the contents of the subfolder
 
-```
+```bash
 $ ls -lh
 ```
 
@@ -63,19 +69,19 @@ To start with, we will check the raw data file for quality and presence of adapt
 
 This program has both a command line version and a graphical user interface (GUI). On NeSI, we will use the command line version. To run this, we first load the module:
     
-```
+```bash
 $ module load FastQC/0.11.9
 ```
 
 For many programs (though not all), you can see the options (*arguments*) available by entering the name of the program and then `-h`:
 
-```
+```bash
 $ fastqc -h
 ```
 
 You should see a long stream of options go by. For programs with many options that do not fit on the screen, you can 'pipe' the command to `less`, so that you can control how much you see:
 
-```
+```bash
 $ fastqc -h | less
 ```
 
@@ -84,7 +90,7 @@ you can then use the arrow keys to scroll through the options. Type `q` at any t
 
 We will now run FastQC on the fastq file in this subfolder:
 
-```
+```bash
 $ fastqc FTP103_S1_L001_R1_001.fastq.gz
 ```
 
@@ -114,14 +120,14 @@ The program, `cutadaptQC`, will read the primer and barcode sequences from the s
 
 As above, the script will need to read from a file called `envs.sh`, so it can load the modules and find the program.
 
-```
+```bash
 source envs.sh
 ```
 
 
 As with fastqc, this program has options that you view with the `-h` argument:
 
-```
+```bash
 cutadaptQC -h
 ```
 
@@ -141,6 +147,7 @@ optional arguments:
   -t THREADS, --threads THREADS
                         [OPTIONAL] number of CPUs to use (default:1)
 ```
+{: .output}
 
 
 Because there are a few options to add here, we will be running this program using a *bash script*, which is a simple text file in which we will enter the commands and options. This script will then be run on the command line. 
@@ -157,7 +164,7 @@ This is called the *shebang* and it tells the computer what program to use to ru
 
 Next, we will have the script read from another file called `envs.sh` that contains the modules needed to run the program, along with a command that adds the scripts folder to the working path so that the script can find the program. 
 
-```
+```bash
 source envs.sh
 ```
 
@@ -165,15 +172,11 @@ source envs.sh
 
 Next, we have to tell the script where to go to run this program. The script will be run from the `scripts` folder, so we can use a *relative path* to tell the script to move to the `data` folder:
 
-```
+```bash
 cd ../data
 ```
 
-
-
 Now, we can add the actual command to the script. When we ran the help command for this program, it gave us the options we need to input along with the name of the program. 
-
-
 
 
 So, after the `cd` command, we enter the name of the program, and then a `-f` for the first parameter, or argument. After this we need to enter the name of the raw fastq file. 
@@ -212,26 +215,29 @@ trim_qc.sh
 
 >NOTE: you can also use the terminal to rename this file:
 
-```
+```bash
 $ mv untitled.txt trim_qc.sh
 ```
 
 
 In order to run this file, we need to make it *executable*. In the terminal, use this command:
 
-```
+```bash
 $ pwd
-
-/home/username/edna/scripts
 ```
 
 ```
+/home/username/obss_2021/edna/scripts
+```
+{: .output}
+
+```bash
 $ chmod a+x trim_qc.sh
 ```
 
 Now, to run this command, in the terminal run it like this:
 
-```
+```bash
 $ ./trim_qc.sh
 ```
 
@@ -244,11 +250,11 @@ Once the script has finished, you should have three new subfolders in your data/
 - fastq
 - fasta
 
-The `/trimmed` subfolder has the fastq sequence files from which primers and barcode sequences have been removed. There is now one for each sample. The `/fastq` folder has the fastq sequence files files, in which each file has taken the corresponding trimmed file and run a quality filter and removed any sequences below the minimum length. The fasta files in the `/fasta` are from the fastq files, from which any quality information has been removed. 
+The `trimmed/` subfolder has the fastq sequence files from which primers and barcode sequences have been removed. There is now one for each sample. The `fastq/` folder has the fastq sequence files files, in which each file has taken the corresponding trimmed file and run a quality filter and removed any sequences below the minimum length. The fasta files in the `fasta/` are from the fastq files, from which any quality information has been removed. 
 
 In the terminal, we will have a peak at each of these files:
 
-```
+```bash
 $ cd ../data/trimmed
 
 $ head -12 AM1_trim.fastq
@@ -256,18 +262,18 @@ $ head -12 AM1_trim.fastq
 
 Let's run FastQC on one of these sequences to compare to the original:
 
-```
+```bash
 $ fastqc AM1_trim.fastq
 ```
 
 We will not see much immediate difference at the \_filt.fastq files. But using fastqc we will see a little more.
 
-```
+```bash
 $ cd ../fastq
 
 $ head -12 AM1_filt.fastq
 
-fastqc AM1_filt.fastq
+$ fastqc AM1_filt.fastq
 ```
 
 
