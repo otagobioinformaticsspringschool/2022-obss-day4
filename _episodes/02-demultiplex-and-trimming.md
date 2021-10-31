@@ -1,11 +1,12 @@
 ---
 title: "Demultiplexing and Trimming"
-teaching: 0
-exercises: 0
+teaching: 25
+exercises: 20
 questions:
-- "Key question (FIXME)"
+- "What are the different primer design methods for metabarcoding?"
+- "How do we demultiplex and quality control metabarcoding data?"
 objectives:
-- "First learning objective. (FIXME)"
+- "Learn the different methods for QC of metabarcoding data"
 keypoints:
 - "First key point. Brief Answer to questions. (FIXME)"
 ---
@@ -63,54 +64,11 @@ $ ls -lh
 The `h` option in the ls command stands for *human readable*. This option will show the size of large files as MB (megabytes) or GB (gigabytes), instead of a long string of numbers representing the number of bytes.
 
 
+FTP103_S1_L001_R1_001.fastq.gz
 
-To start with, we will check the raw data file for quality and presence of adapters from sequencing. To do this we will use the program *FastQC* (website: <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/" target="_blank" rel="noopener noreferrer"><b>https://www.bioinformatics.babraham.ac.uk/projects/fastqc/</b></a>). 
-
-
-This program has both a command line version and a graphical user interface (GUI). On NeSI, we will use the command line version. To run this, we first load the module:
-    
-```bash
-$ module load FastQC/0.11.9
-```
-
-For many programs (though not all), you can see the options (*arguments*) available by entering the name of the program and then `-h`:
-
-```bash
-$ fastqc -h
-```
-
-You should see a long stream of options go by. For programs with many options that do not fit on the screen, you can 'pipe' the command to `less`, so that you can control how much you see:
-
-```bash
-$ fastqc -h | less
-```
-
-you can then use the arrow keys to scroll through the options. Type `q` at any time to quit this view. 
-
-
-We will now run FastQC on the fastq file in this subfolder:
-
-```bash
-$ fastqc FTP103_S1_L001_R1_001.fastq.gz
-```
-
-You should see the command running
 
 ![alt_text](../fig/chapter_3_fastqc_1.png)
 
-This command will result in two outputs: a zipped folder containing all the separate results, and an `.html` file that has a summary in a format that can be read by your browser. In JupyterHub, you can double-click on this file and it will open in a new tab in your browser. 
-
-![alt_text](../fig/chapter_3_fastqc_2.png)
-
-The new tab will direct us to an interactive document. For eDNA data, we want to check in this report that:
-  
-1. The _per base sequence quality_ stays within the green area.
-2. The _number of sequences_ you received.
-3. The data does not contain _N_ bases.
-4. All sequences have _the same length_, equal to the cycle number of the sequencing kit.
-
-
-We will check the quality of the outputs after we have processed the data.
 
 ## Demultiplexing, trimming, and quality filtering
 
@@ -125,7 +83,7 @@ source envs.sh
 ```
 
 
-As with fastqc, this program has options that you view with the `-h` argument:
+As with other programs you have seen, this program has options that you view with the `-h` argument:
 
 ```bash
 cutadaptQC -h
@@ -252,7 +210,7 @@ Once the script has finished, you should have three new subfolders in your data/
 
 The `trimmed/` subfolder has the fastq sequence files from which primers and barcode sequences have been removed. There is now one for each sample. The `fastq/` folder has the fastq sequence files files, in which each file has taken the corresponding trimmed file and run a quality filter and removed any sequences below the minimum length. The fasta files in the `fasta/` are from the fastq files, from which any quality information has been removed. 
 
-In the terminal, we will have a peak at each of these files:
+In the terminal, we will have a peek at each of these files:
 
 ```bash
 $ cd ../data/trimmed
@@ -282,6 +240,6 @@ Now, open up these two fastqc outputs (double-click on the .html file), and see 
 
 
 
-![alt_text](../fig/chapter_5_fastqc.png)
+
 
 {% include links.md %}
