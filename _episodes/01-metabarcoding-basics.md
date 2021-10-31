@@ -1,13 +1,14 @@
 ---
 title: "Metabarcoding Basics"
-teaching: 0
+teaching: 20
 exercises: 0
 questions:
-- "Key question (FIXME)"
+- "What are the main components of metabarcoding pipelines"
 objectives:
-- "First learning objective. (FIXME)"
+- "Review typical metabarcoding workflows"
 keypoints:
-- "First key point. Brief Answer to questions. (FIXME)"
+- "Most metabarcoding pipelines include the same basic components"
+- "Frequency tables are key to metabarcoding analyses"
 ---
 
 # eDNA Workshop
