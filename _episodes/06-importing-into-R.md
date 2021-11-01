@@ -1,7 +1,7 @@
 ---
-title: "Importing outputs into R"
-teaching: 0
-exercises: 0
+title: "Statistics and Graphing with R"
+teaching: 20
+exercises: 60
 questions:
 - "Key question (FIXME)"
 objectives:

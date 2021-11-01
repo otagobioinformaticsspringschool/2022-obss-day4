@@ -1,7 +1,7 @@
 ---
 title: "Denoising or clustering the sequences"
-teaching: 0
-exercises: 0
+teaching: 15
+exercises: 30
 questions:
 - "Key question (FIXME)"
 objectives:
