@@ -42,103 +42,60 @@ Another way to assign taxonomy utilises machine learning algorithms.
 
 
 
-## Use Naive Bayes (machine learning) to classify in Qiime
+## Use the program Sintax to classify our OTUs
 
-In order to use the Naive Bayes (NB) method to assign taxonomy, it is necessary to train the sequence database first. Because this can take a great deal of time, a pre-trained classifier has been made available for you. The website for this course contains details of how this classifier was 'trained' **add link**. The <a href="https://docs.qiime2.org/2021.4/data-resources/" target="_blank" rel="noopener noreferrer"><b>Qiime2 Data Resources page</b></a> provides some pre-trained classifiers for common primer combinations, as well as links to the Greengenes and Silva databases for 16S and 18S gene studies. For additional primer combinations, or other gene references, there is a <a href="https://docs.qiime2.org/2021.4/tutorials/feature-classifier/" target="_blank" rel="noopener noreferrer"><b>tutorial for training feature classifiers</b></a>. 
+The program <a href="https://www.drive5.com/usearch/manual/cmd_sintax.html" target="_blank" rel="noopener noreferrer"><b>Sintax</b></a> is similar to the Naive Bayes classifier used in Qiime and other programs, but is simplified and can run much faster. Nevertheless, we have found it as accurate as Naive Bayes for the fish dataset we are using in this workshop. As with the previous steps, we will be using a bash script to run the classification. As before, we will use VSEARCH to run Sintax.
 
-Because this command can take a few minutes to run, we will run it as a slurm job. 
+Go to the `scripts` folder and create a file called *classify_sintax.sh*, using either Nano (`nano classify_sintax.sh`) or from the Launcher in Jupyter. 
 
-## Setting up SLURM job
+Start to fill in the neccessary components. Here is a template to start. We will go through each of the arguments.
 
-First off, create a text file named `classify_nb.sl`. In this file, we first need to add the `#SBATCH` arguments to the file. In the script file there is a file called `slurm_job_script_template.sl`. Open this also, and copy the lines over to your new job script. We will fill in the `#SBATCH` arguments one by one. 
-
-Your new script should now look like this:
-
-```
-#!/bin/bash -e
-#SBATCH --account nesi02659
-#SBATCH --job-name 
-#SBATCH --time 
-#SBATCH --nodes 
-#SBATCH --cpus-per-task 
-#SBATCH --ntasks 
-#SBATCH --mem
-#SBATCH --output .%j.out 
-#SBATCH --error .%j.err 
-
-# load the module
-
-
-# go to directory
-
-
-# run command
-
-```
-
-
-The first line has the usual shebang. You will notice the `-e` after this on that line. This option is in case there is an error somewhere in the script, then the job will stop right away.
-
-Now let's go through the `#SBATCH` part. 
-
-The `--account` line is for the project code. This is filled in. When you are working on your own data, you will fill in your own project code on this line.
-
-The `--job-name` is for a code for this job. Keep this short, like `fish1` or `nb1`.
-
-`--time` is for how long the job can run. You want to put enough to finish the job, but not too long or the job can sit on the queue for longer. The time goes hours\:minutes:seconds
-
-For this job, enter `00:15:00` for 15 minutes.
-
-`--nodes` is the number of nodes. Enter `1`
-
-`--cpus-per-task` is the number of processors or CPUs to use. It is important to match this to the number you request for the particular program you are running. Enter `2` for this.
-
-`--ntasks` is the number of parallel processes you run. This is usually `1` unless you are running programs in parallel. 
-
-`--mem` is the amount of RAM you need. For this we will use `8G` for eight gigabytes. 
-
-`--output` and `--error` are optional extras that record the output from the job run. Put the shorthand name of the job in front of the `.%j.out`/`.err` part.
-
-This should now be ready to go.
-
-The NeSI website has good documentation to help you with Slurm scripts. <a href="https://support.nesi.org.nz/hc/en-gb/articles/360000684396-Submitting-your-first-job" target="_blank" rel="noopener noreferrer"><b>Here is a good page that goes through these and other SBATCH options</b></a>
-
-
-
-The rest of the script is as we have done before. The comment lines (with `#`s) indicate what to add. 
-
-Add a line to load the Qiime module.
-
-This will be run in the `taxonomy/` subfolder:
-
-```
-cd ../taxonomy
-```
-
-Now we will add the command. You will have a go at putting the command together. Here is a link to the Qiime plugin to run NB taxonomy:
-
-<a href="https://docs.qiime2.org/2021.4/plugins/available/feature-classifier/classify-sklearn/" target="_blank" rel="noopener noreferrer"><b>Plugin for training feature classifiers</b></a>
-
-To get you started:
-
-```
-qiime feature-classifier classify-sklearn \
-```
-
-- The OTUs are what we will classify
-- Make sure you add all the arguments listed on the webpage as **[required]**
-- The classifier you need is in your `/references` subfolder. It is called `lrRNA_fish_db_classifier.qza`
-- The output file name is up to you, but make sure you use `.qza` as a suffix
-
-In addition to the required arguments, also add the `--p-confidence` and `--p-n-jobs` options. For the first, check the default and use a higher number (but not higher than 1.0). For the second, this is the number of CPUs to use. Make sure it is not more than the `#SBATCH` option above.
-
-
-Once you have completed the command, the job script is ready to go. To submit the job script to the queue:
 
 ```bash
-sbatch classify_nb.sl
+#!/bin/bash
+
+module load ...
+
+cd ../taxonomy
+
+vsearch --sintax \
+  ../otus/<OTU_FILE> \
+  --db ../references/<REFERENCE-FILE> \
+  --sintax_cutoff <CUTOFF> \
+  --tabbedout <OUTPUT-FILE>
+
 ```
 
+Now we will fill in the parameters (between the <>)
+
+After the first line, we just put the name of the OTU file from the clustering lesson, no argument is required, but the path is needed to point the program to where the file is: `../otus/` 
+
+On the next line, after the `--db`, put the path `../references/` and the reference file. 
+
+The next line is for the confidence cut off. If the estimated confidence of a taxonomic assignment falls below this number, the assignment will not be recorded. The default for this is 0.6, but we will use a higher cutoff of `0.8` for the `--sintax_cutoff` argument.
+
+The final line is to name the output file. You can use any name, but it is better to include some information such as the name of the OTUs and program used (sintax), in case want to compare the results with other runs. Also include the suffix `.tsv`, which will tell Jupyter that it is a table file.
+
+Now you are done. Save and close the file. Make the script executable and run it on the command line.
+
+```
+chmod a+x classify_sintax.sh
+
+./classify_sintax.sh
+```
+
+### 
+
+Have a look at the output file. Find the file in the taxonomy folder and double click to open it in Jupyter. You will see it is divided into two main parts. The first includes the name of each rank (e.g. *p:Chordata* to indicate the phylum Chordata), followed by the confidence for the assignment at that rank in parentheses. The second section, which follows the *+*, has only the name of each rank and includes only those ranks whose confidence is above the `--sintax_cutoff` parameter used. 
+
+
+> ## Study Questions
+>
+> Name an OTU that would have better resolution if the cutoff were set to default
+> 
+> Name an OTU that would have worse resolution if the cutoff were set higher
+> 
+{: .challenge}
 
 
 ## Visualisation in Qiime
@@ -163,11 +120,29 @@ This visual shows the sequence for each OTU. You can run a BLAST search on each 
 
 <br><br>
 
-## Exporting Qiime files
+## Converting the output file
 
-Within the Qiime2 multiverse, there is a lot of downstream analyses once you have your assigned taxonomy and your other inputs in Qiime format `.qza` (the sample metadata file is one of the few exceptions: it remains as a plain text file). However, as the stated goal of this course is to be able to interact with multiple programs, we are going to export the output from the taxonomy classification so that we can use it with other programs, specifically graphing in R. 
+While the sintax output file is very informative, we will convert it to a simpler format that will make it easier to import into other downstream applications. Fortunately, the eDNA module has a script that will convert the file into several other formats. At the terminal prompt, go to the taxonomy folder and enter the script name and the help argument
 
-There is a handy qiime tool to do this. It has just two required options. In the terminal, load the qiime module if it is not loaded already, and run the help message:
+```bash
+convert_tax_format.py -h
+```
+
+You will see the options:
+
+```bash
+-i file to convert
+-o output file
+-f format to convert to
+```
+{: .output}
+
+
+
+
+<br><br>
+
+## qiime leftover
 
 ```bash
 module load QIIME2/2021.2
@@ -208,25 +183,22 @@ Once you have an exported, renamed taxonomy output, open the file (either in Jup
 We will just need one more Qiime file exported for downstream analyses: the phylogenetic tree we created earlier (`rooted-tree.qza`). Write another bash script to export the tree file. (Hint: you will need another `/exports` folder in your 
 
 
-
-
-
-
 <br><br>
 
-## Extra exercise: run BLAST taxonomy assignment
+>## Extra exercise: run BLAST taxonomy assignment
+>
+> Qiime2 has two other methods for taxonomy assignment. If you have some time, you can run BLAST as well to find taxonomy. 
+>
+> https://docs.qiime2.org/2021.4/plugins/available/feature-classifier/classify-consensus-blast/
+>
+> Hints:
 
-Qiime2 has two other methods for taxonomy assignment. If you have some time, you can run BLAST as well to find taxonomy. 
+> - You will not use the trained data, instead for `--i-reference-reads` use the fasta.qza, and for `--i-reference-taxonomy` use the taxon.qza file. Both are in the reference folder
+>
+> - Add the options `--p-perc-identity` and `--p-query-cov`, and try increasing the value for these. 
+>
+> - Run it as a Slurm job. Increase the time given to 30 minutes.
+{: .challenge}
 
-
-https://docs.qiime2.org/2021.4/plugins/available/feature-classifier/classify-consensus-blast/
-
-Hints:
-
-- You will not use the trained data, instead for `--i-reference-reads` use the fasta.qza, and for `--i-reference-taxonomy` use the taxon.qza file. Both are in the reference folder
-
-- Add the options `--p-perc-identity` and `--p-query-cov`, and try increasing the value for these. 
-
-- Run it as a Slurm job. Increase the time given to 30 minutes.
 
 {% include links.md %}
