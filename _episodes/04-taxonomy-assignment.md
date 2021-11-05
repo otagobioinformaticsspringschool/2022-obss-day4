@@ -130,7 +130,7 @@ convert_tax_format.py -h
 
 You will see the options:
 
-```bash
+```
 -i file to convert
 -o output file
 -f format to convert to
@@ -192,7 +192,7 @@ We will just need one more Qiime file exported for downstream analyses: the phyl
 > https://docs.qiime2.org/2021.4/plugins/available/feature-classifier/classify-consensus-blast/
 >
 > Hints:
-
+>
 > - You will not use the trained data, instead for `--i-reference-reads` use the fasta.qza, and for `--i-reference-taxonomy` use the taxon.qza file. Both are in the reference folder
 >
 > - Add the options `--p-perc-identity` and `--p-query-cov`, and try increasing the value for these. 
