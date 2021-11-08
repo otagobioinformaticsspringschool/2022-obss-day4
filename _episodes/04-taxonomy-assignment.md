@@ -48,33 +48,59 @@ The program <a href="https://www.drive5.com/usearch/manual/cmd_sintax.html" targ
 
 Go to the `scripts` folder and create a file called *classify_sintax.sh*, using either Nano (`nano classify_sintax.sh`) or from the Launcher in Jupyter. 
 
-Start to fill in the neccessary components. Here is a template to start. We will go through each of the arguments.
-
-
-```bash
-#!/bin/bash
-
-module load ...
-
-cd ../taxonomy
-
-vsearch --sintax \
-  ../otus/<OTU_FILE> \
-  --db ../references/<REFERENCE-FILE> \
-  --sintax_cutoff <CUTOFF> \
-  --tabbedout <OUTPUT-FILE>
+The VSEARCH command has many functions and many options. In the command line, you can list these more easily using `less`:
 
 ```
+vsearch -h | less
+```
 
-Now we will fill in the parameters (between the <>)
+Looking at a long help command this way allows you to scroll up and down the help options. For the sintax script, you will need to fill in these parameters:
 
-After the first line, we just put the name of the OTU file from the clustering lesson, no argument is required, but the path is needed to point the program to where the file is: `../otus/` 
+- `--sintax`
+- `--db`
+- `--sintax_cutoff`
+- `--tabbedout`
 
-On the next line, after the `--db`, put the path `../references/` and the reference file. 
+> ## Write a script to run sintax through VSEARCH
+> 
+> Hints:
+> 
+> Start to fill in the neccessary components. We will go through each of the arguments.
+> 
+> When you start searching with `less`, you can quit anytime by just entering `q`. 
+> 
+> You can also search for a specific part of the help output by entering a forward slash (`/`), followed by the term you are looking for
+> 
+> You can go to top of the search by entering `gg`, and to the bottom by entering `G`.
+> 
+> Try to figure out which parameter you need to fill in for each of these options. 
+> 
+> To get you started, the `--sintax` argument has to go right after `vsearch`, and its parameter is the name of the OTU file you created in the last lesson
+>
+>> ## Solution
+>> 
+>> ~~~bash
+>> module load eDNA
+>> 
+>> cd ../taxonomy
+>>
+>> vsearch --sintax \
+>>  ../otus/<OTU_FILE> \
+>>  --db ../references/<REFERENCE-FILE> \
+>>  --sintax_cutoff <CUTOFF> \
+>>  --tabbedout <OUTPUT-FILE>
+>> ~~~
+>> After the first line, we just put the name of the OTU file from the clustering lesson, remember the path is needed to point the program to where the file is
+>>
+>> On the next line, after the `--db`, put the path `../references/` and the reference file. 
+>>
+>> The next line is for the confidence cut off. If the estimated confidence of a taxonomic assignment falls below this number, the assignment will not be recorded. >> The default for this is 0.6, but we will use a higher cutoff of `0.8` for the `--sintax_cutoff` argument.
+>>
+>> The final line is to name the output file. You can use any name, but it is better to include some information such as the name of the OTUs and program used    >> (sintax), in case want to compare the results with other runs. Also include the suffix `.tsv`, which will tell Jupyter that it is a table file.
+>>
+> {: .solution}
+{: .challenge}
 
-The next line is for the confidence cut off. If the estimated confidence of a taxonomic assignment falls below this number, the assignment will not be recorded. The default for this is 0.6, but we will use a higher cutoff of `0.8` for the `--sintax_cutoff` argument.
-
-The final line is to name the output file. You can use any name, but it is better to include some information such as the name of the OTUs and program used (sintax), in case want to compare the results with other runs. Also include the suffix `.tsv`, which will tell Jupyter that it is a table file.
 
 Now you are done. Save and close the file. Make the script executable and run it on the command line.
 
@@ -107,15 +133,21 @@ For all these plots, they need to be opened on a webpage called Qiime2View. Clic
 <a href="https://view.qiime2.org/" target="_blank" rel="noopener noreferrer"><b>Qiime2View webpage</b></a>
 
 To see a table of the taxonomy assignment of each OTU, paste the following link into the Qiime2View webpage (do not click on it).
+
 https://otagoedna.github.io/2019_11_28_edna_course/example_viz/fish_NB_taxonomy_VIZ.qzv
+
 Then go to the Qiime2View website, click on 'file from the web', and paste the link in the box that opens up.
 
 The next plot is a barplot graph of the taxonomy. A barplot graph is a good way to compare the taxonomic profile among samples. 
 
 Paste the following link into the Qiime2View page:
+
 https://otagoedna.github.io/2019_11_28_edna_course/example_viz/fish_NB_taxonomy_barplot.qzv
+
 We are also including a table of the OTU sequences.
+
 https://otagoedna.github.io/2019_11_28_edna_course/example_viz/zotus_tabulation.qzv
+
 This visual shows the sequence for each OTU. You can run a BLAST search on each OTU by clicking on the sequence. However, the search can take a while, depending on how busy the NCBI server is.
 
 <br><br>
@@ -133,7 +165,7 @@ You will see the options:
 ```
 -i file to convert
 -o output file
--f format to convert to
+-f output format
 ```
 {: .output}
 
