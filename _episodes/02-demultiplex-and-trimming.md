@@ -149,8 +149,8 @@ Because there are a few options to add here, we will be running this program usi
 >>  -n fish_project
 >> ~~~
 >>
-{: .challenge}
 > {: .solution}
+{: .challenge}
 
 
 
