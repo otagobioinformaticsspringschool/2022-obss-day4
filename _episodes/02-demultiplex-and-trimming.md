@@ -125,15 +125,15 @@ Because there are a few options to add here, we will be running this program usi
 > module load eDNA
 > ```
 > 
-> Now, we can add the actual command to the script. When we ran the help command for this program, it gave us the options we need to input along with the name of the program. 
+> Now, we can add the actual command to the script. When we ran the help command for this program, it gave us the options we need to input along with the name of > > the program. 
 >
 > For the `-r` option, you need to enter the name of the raw data file (make sure to include the path to the file):
 >
 > FTP103_S1_L001_R1_001.fastq.gz
 >
-> The program will read from the sample metadata file to know which barcode and primer sequences to use for each sample. The `-m` option will tell the program which metadata file to use. As this file is in the `docs/` folder, remember to add the (relative) path:
+> The program will read from the sample metadata file to know which barcode and primer sequences to use for each sample. The `-m` option will tell the program     > which metadata file to use. As this file is in the `docs/` folder, remember to add the (relative) path:
 >
-> Finally, we need to input the minimum length desired for the final sequences. For this project, the default of 150 is what we will use, but for practice we will add this option.
+> Finally, we need to input the minimum length desired for the final sequences. For this project, the default of 150 is what we will use, but for practice we will > add this option.
 >
 >> ## Solution
 >> Your script should look like this:
