@@ -3,11 +3,15 @@ title: "Taxonomy Assignment"
 teaching: 15
 exercises: 30
 questions:
-- "Key question (FIXME)"
+- "What are the main strategies for assigning taxonomy to OTUs"
+- "What is the difference between Sintax and Naive Bayes"
 objectives:
-- "First learning objective. (FIXME)"
+- "Assign taxonomy using Sintax"
+- "Use `less` to explore a long help output"
+- "Write a script to assign taxonomy"
 keypoints:
-- "First key point. Brief Answer to questions. (FIXME)"
+- "The main taxonomy assignment strategies are global alignments, local alignments, and machine learning approaches"
+- "The main difference is that Naive Bayes requires the reference data to be trained, whereas Sintax looks for only kmer-based matches"
 ---
 
 # Taxonomy Assignment: Different Approaches
@@ -21,7 +25,7 @@ for a discussion of them see the <a href="https://microbiomejournal.biomedcentra
 
 ## Aligment-Based Methods
 
-BLAST is one of the most common methods of searching DNA sequences. BLAST is an acronym for Basic Local Alignment Search Tool. It is called this because it looks for any short, matching sequence, or local alignments, with the reference. This is contrasted with a *global alignment*, which tries to find the best match across the entirety of the sequence.  
+BLAST is one of the most common methods of searching DNA sequences. BLAST is an acronym for Basic Local Alignment Search Tool. It is called this because it looks for any short, matching sequence, or *local alignments*, with the reference. This is contrasted with a *global alignment*, which tries to find the best match across the entirety of the sequence.  
 
 
 ![alt text](../fig/globalVlocal_image.png)
@@ -87,7 +91,7 @@ Looking at a long help command this way allows you to scroll up and down the hel
 >> vsearch --sintax \
 >>  ../otus/<OTU_FILE> \
 >>  --db ../references/<REFERENCE-FILE> \
->>  --sintax_cutoff <CUTOFF> \
+>>  --sintax_cutoff 0.8 \
 >>  --tabbedout <OUTPUT-FILE>
 >> ~~~
 >> After the first line, we just put the name of the OTU file from the clustering lesson, remember the path is needed to point the program to where the file is
@@ -169,50 +173,11 @@ You will see the options:
 ```
 {: .output}
 
-
+This program will run very fast, so you can run it on the command line. Check the output. You should see a new table with each taxonomic rank in its own column. (**Hint:** if you name the output file with `.tsv` at the end, then it will open in Jupyter as a table.)
 
 
 <br><br>
 
-## qiime leftover
-
-```bash
-module load QIIME2/2021.2
-
-qiime tools export --help
-```
-
-you should see this output:
-
-```
-Usage: qiime tools export [OPTIONS]
-
-  Exporting extracts (and optionally transforms) data stored inside an
-  Artifact or Visualization. Note that Visualizations cannot be transformed
-  with --output-format
-
-Options:
-  --input-path ARTIFACT/VISUALIZATION
-                        Path to file that should be exported        [required]
-  --output-path PATH    Path to file or directory where data should be
-                        exported to                                 [required]
-  --output-format TEXT  Format which the data should be exported as. This
-                        option cannot be used with Visualizations
-  --help                Show this message and exit.
-```
-{: .output}
-
-Write a bash script (not a Slurm job) to export the taxonomy classification output. You will just need to use the `--input-path` and `--output-path` arguments. For Qiime exports, the `--output-path` argument only uses a path, not a file name. You will have to rename the output after exporting. The best is to create a folder called exports in the taxonomy folder. 
-
-```bash
-mkdir exports
-```
-
-Once you have run the script, you can rename the output and move it from the `/exports` folder to the main `/taxonomy` folder using the `mv` command. 
-
-Once you have an exported, renamed taxonomy output, open the file (either in Jupyter or using Nano) and have a look. 
-
-We will just need one more Qiime file exported for downstream analyses: the phylogenetic tree we created earlier (`rooted-tree.qza`). Write another bash script to export the tree file. (Hint: you will need another `/exports` folder in your 
 
 
 <br><br>
