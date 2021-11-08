@@ -138,7 +138,7 @@ For all these plots, they need to be opened on a webpage called Qiime2View. Clic
 
 To see a table of the taxonomy assignment of each OTU, paste the following link into the Qiime2View webpage (do not click on it).
 
-https://otagoedna.github.io/2019_11_28_edna_course/example_viz/fish_NB_taxonomy_VIZ.qzv
+**https://otagoedna.github.io/2019_11_28_edna_course/example_viz/fish_NB_taxonomy_VIZ.qzv**
 
 Then go to the Qiime2View website, click on 'file from the web', and paste the link in the box that opens up.
 
@@ -146,11 +146,11 @@ The next plot is a barplot graph of the taxonomy. A barplot graph is a good way 
 
 Paste the following link into the Qiime2View page:
 
-https://otagoedna.github.io/2019_11_28_edna_course/example_viz/fish_NB_taxonomy_barplot.qzv
+**https://otagoedna.github.io/2019_11_28_edna_course/example_viz/fish_NB_taxonomy_barplot.qzv**
 
 We are also including a table of the OTU sequences.
 
-https://otagoedna.github.io/2019_11_28_edna_course/example_viz/zotus_tabulation.qzv
+**https://otagoedna.github.io/2019_11_28_edna_course/example_viz/zotus_tabulation.qzv**
 
 This visual shows the sequence for each OTU. You can run a BLAST search on each OTU by clicking on the sequence. However, the search can take a while, depending on how busy the NCBI server is.
 
