@@ -87,7 +87,7 @@ Note how the second command uses as input the output of the first command.
 
 
 
-To run the script, you just have to make it executable and run it, as with the `trim_qc.sh` script
+Remember to run the script, you have to make it executable and run it, as with the `trim_qc.sh` script
 
 ```bash
 $ chmod a+x dereplicate_seqs.sh
@@ -114,39 +114,53 @@ $ ls ../otus
 
 
 
-The next script will run the commands to denoise the sequences and create a frequency table. On your own, create a script named `denoise.sh` to run the following three commands:
+The next script will run the commands to denoise the sequences and create a frequency table. On your own, create a script named `cluster.sh` to run the following three commands:
 
 ```
-vsearch --cluster_unoise sorted_combined.fasta --sizein --sizeout --fasta_width 0 --centroids centroids.fasta
+vsearch --cluster_size sorted_combined.fasta --centroids centroids.fasta --sizein --id 0.97 --sizeout
 
 vsearch --uchime3_denovo centroids.fasta --sizein --fasta_width 0 --nonchimeras otus.fasta --relabel OTU.
 
 vsearch --usearch_global combined.fasta --db otus.fasta --id 0.9 --otutabout otu_frequency_table.tsv
 ```
 
-Check the commands above, do you need to change any paths?
+> ### Tip
+> Check the commands above, do you need to change any paths?
+{: .callout}
 
-The results of the last script creates three files: `centroids.fasta`, `otus.fasta`, and `otu_frequency_table.tsv`. Let's have a look at these files to see what is output. From looking at the output, can you guess what some of these VSEARCH parameters are doing?
+> ## Study Questions
+> The results of the last script creates three files: `centroids.fasta`, `otus.fasta`, and `otu_frequency_table.tsv`. 
+> Let's have a look at these files to see what is output. From looking at the output, can you guess what some of these VSEARCH parameters are doing?
+> 
+> - `--sizein`
+> - `--sizeout`
+> - `--centroids`
+> - `--relabel`
+> 
+> How about `--fasta_width 0`? Try rerunning the script without this command to see if you can tell what this option is doing. 
+> 
+{: .challenge}
 
-- `--sizein`
-- `--sizeout`
-- `--centroids`
-- `--relabel`
+<br><br>
 
-How about `--fasta_width 0`? Try rerunning the script without this command to see if you can tell what this option is doing. 
+> ## Optional extra
+> 
+> We discussed the difference between denoising and clustering. You can change the last script to have VSEARCH do clustering instead of denoising. 
+> Make a new script to run clustering. It is similar to `cluster.sh`, except you do not use the `vsearch --cluster_unoise` command. Instead you will use:
+> 
+> ```
+> vsearch --cluster_unoise sorted_combined.fasta --sizein --sizeout --fasta_width 0 --centroids centroids.fasta
+> ```
+> 
+> You will still need the commands to remove chimeras and create a frequency table. 
+> Make sure to change the names of the files so that you are making a **new** frequency table. 
+> If you leave the old name in, it will be overwritten when you run this script. 
+> 
+> Give it a try and compare the number of OTUs between clustering and denoising outputs. 
+> 
+> The `--id` argument is critical for clustering. What happens if you raise or lower this number? 
+> Try rerunning the script to see how it changes the results. Note: make sure to rename the output each time or you will not be able to compare to previous runs. 
+{: .challenge}
 
-## Optional extra
-
-We discussed the difference between denoising and clustering. You can change the last script to have VSEARCH do clustering instead of denoising. Make a new script to run clustering. It is similar to `denoise.sh`, except you do not use the `vsearch --cluster_unoise` nor `vsearch --uchime3_denovo` commands. Instead you will use:
-
-```
-vsearch --cluster_size sorted_combined.fasta --centroids cluster_otus.fasta --relabel otu. --id 0.97 --sizeout
-```
-
-You will still need a command to create a frequency table. Make sure to change the names of the files so that you are making a **new** frequency table. If you leave the old name in, it will be overwritten when you run this script. 
-
-Give it a try and compare the number of OTUs between clustering and denoising outputs. 
-
-The `--id` argument is critical for clustering. What happens if you raise or lower this number? Try rerunning the script to see how it changes the results. Note: make sure to rename the output each time or you will not be able to compare to previous runs. 
 
 {% include links.md %}

@@ -142,11 +142,15 @@ To see a table of the taxonomy assignment of each OTU, paste the following link 
 
 Then go to the Qiime2View website, click on 'file from the web', and paste the link in the box that opens up.
 
+<br>
+
 The next plot is a barplot graph of the taxonomy. A barplot graph is a good way to compare the taxonomic profile among samples. 
 
 Paste the following link into the Qiime2View page:
 
 **https://otagoedna.github.io/2019_11_28_edna_course/example_viz/fish_NB_taxonomy_barplot.qzv**
+
+<br>
 
 We are also including a table of the OTU sequences.
 
@@ -161,15 +165,15 @@ This visual shows the sequence for each OTU. You can run a BLAST search on each 
 While the sintax output file is very informative, we will convert it to a simpler format that will make it easier to import into other downstream applications. Fortunately, the eDNA module has a script that will convert the file into several other formats. At the terminal prompt, go to the taxonomy folder and enter the script name and the help argument
 
 ```bash
-convert_tax_format.py -h
+convert_tax2table.py -h
 ```
 
 You will see the options:
 
 ```
 -i file to convert
--o output file
--f output format
+-o output table
+-f input format
 ```
 {: .output}
 
