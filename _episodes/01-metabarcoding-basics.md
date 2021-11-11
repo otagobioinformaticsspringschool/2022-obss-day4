@@ -1,9 +1,9 @@
 ---
 title: "Metabarcoding Basics"
-teaching: 20
+teaching: 15
 exercises: 0
 questions:
-- "What are the main components of metabarcoding pipelines"
+- "What are the main components of metabarcoding pipelines?"
 objectives:
 - "Review typical metabarcoding workflows"
 keypoints:

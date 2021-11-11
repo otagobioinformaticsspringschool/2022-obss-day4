@@ -1,7 +1,7 @@
 ---
 title: "Introduction to Qiime"
-teaching: 20
-exercises: 10
+teaching: 10
+exercises: 5
 questions:
 - "Key question (FIXME)"
 objectives:

@@ -1,7 +1,7 @@
 ---
 title: "Demultiplexing and Trimming"
-teaching: 25
-exercises: 20
+teaching: 20
+exercises: 10
 questions:
 - "What are the different primer design methods for metabarcoding?"
 - "How do we demultiplex and quality control metabarcoding data?"

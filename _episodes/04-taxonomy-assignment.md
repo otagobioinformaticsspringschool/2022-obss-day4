@@ -3,8 +3,8 @@ title: "Taxonomy Assignment"
 teaching: 15
 exercises: 30
 questions:
-- "What are the main strategies for assigning taxonomy to OTUs"
-- "What is the difference between Sintax and Naive Bayes"
+- "What are the main strategies for assigning taxonomy to OTUs?"
+- "What is the difference between Sintax and Naive Bayes?"
 objectives:
 - "Assign taxonomy using Sintax"
 - "Use `less` to explore a long help output"

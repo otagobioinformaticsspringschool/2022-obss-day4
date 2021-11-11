@@ -3,11 +3,12 @@ title: "Denoising or clustering the sequences"
 teaching: 15
 exercises: 30
 questions:
-- "Key question (FIXME)"
+- "Is it better to denoise or cluster sequence data?"
 objectives:
-- "First learning objective. (FIXME)"
+- "Learn to cluster sequences into OTUs with the VSEARCH pipeline"
 keypoints:
-- "First key point. Brief Answer to questions. (FIXME)"
+- "Clustering sequences into OTUs can miss closely related species"
+- "Denoising sequences can create overestimate diversity when reference databases are incomplete"
 ---
 
 ## Introduction
@@ -26,7 +27,7 @@ This difference in approach may seem small but has a very big impact on your fin
   
 When you denoise the dataset, it is expected that one species may have more than one ZOTU, while if you cluster the dataset, it is expected that an OTU may have more than one species assigned to it. This means that you may lose some correct biological sequences that are present in your data when you cluster the dataset, because they will be clustered together. In other words, you will miss out on differentiating closely related species and intraspecific variation. For denoising, on the other hand, it means that when the reference database is incomplete, or you plan to work with ZOTUs instead of taxonomic assignments, your diversity estimates will be highly inflated.  
   
-For this workshop, we will follow the denoising pathway, since most people are working on vertebrate datasets with good reference databases and are interested in taxonomic assignments.
+For this workshop, we will follow the clustering pathway, since most people are working on vertebrate datasets with good reference databases and are interested in taxonomic assignments.
 
 
 Prior to clustering or denoising, we need to dereplicate our data into unique sequences. Since metabarcoding data is based on an amplification method, the same starting DNA molecule can be sequenced multiple times. In order to reduce file size and computational time, it is convenient to combine these duplicated sequences as one and retain information on how many were combined. Additionally, we will remove sequences that only occur once in our data and attribute them to sequence and PCR error. Lastly, we will sort the sequences based on abundance.

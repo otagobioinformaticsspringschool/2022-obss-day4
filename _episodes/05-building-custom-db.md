@@ -1,6 +1,6 @@
 ---
 title: "Creating A Reference Database"
-teaching: 30
+teaching: 15
 exercises: 30
 questions:
 - "What reference databases are available for metabarcoding"

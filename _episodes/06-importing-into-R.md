@@ -1,13 +1,18 @@
 ---
-title: "Statistics and Graphing with R"
+title: "Statistics with R: Getting Started"
 teaching: 20
-exercises: 60
+exercises: 10
 questions:
-- "Key question (FIXME)"
+- "What R packages do I need to explore my results?"
+- "How do I import my results into R?"
 objectives:
-- "First learning objective. (FIXME)"
+- "Learn the basics of the R package Phyloseq"
+- "Create R objects from metabarcoding results"
+- "Output graphics to files"
 keypoints:
-- "First key point. Brief Answer to questions. (FIXME)"
+- "Phyloseq has many functions to explore metabarcoding data"
+- "Results from early lessons must be converted to a matrix"
+- "Phyloseq is integrated with ggplot to expand graphic output"
 ---
 
 # Importing outputs into R
@@ -19,6 +24,8 @@ There are many possible file and data types that can be imported into Phyloseq:
 ![alt_text](../fig/phyloseq_imports.png)
 
 
+
+To start off, we will load the R libraries we will need
 
 ```r
 # load the packages
@@ -32,15 +39,19 @@ library('vegan')
 library('stringr')
 ```
 
+We will do the work in the 'plots' directory, so in R, set that as the working directory
 
 ```r
 # set the working directory
 setwd('../plots')
 ```
 
+Now, we will put together all the elements to create a Phyloseq object
+
+
 ## Import the frequency table
 
-
+First we will import the frequency table.
 
 
 ```r
@@ -95,10 +106,9 @@ head(otumat)
 </table>
 
 
-
+Now create an OTU object using the function `otu_table`
 
 ```r
-# create a Phyloseq object using the function `otu_table`
 OTU <- otu_table(otumat, taxa_are_rows = TRUE)
 head(OTU)
 ```
@@ -123,7 +133,7 @@ head(OTU)
 
 ## import the taxonomy table (exported from Qiime2)
 
-Now we will import the taxonomy table. After importing to R, we will have to split the taxonomy column into separate columns for each taxon, so that Phyloseq can recognise it.
+Now we will import the taxonomy table. This is the output from the Sintax analysis.
 
 
 ```r
@@ -131,40 +141,10 @@ import_taxa <- read.table('../taxonomy/otu_taxonomy.tsv',header=TRUE,sep='\t',ro
 head(import_taxa)
 ```
 
+Convert to a matrix:
 
-<table class="dataframe">
-<caption>A data.frame: 6 × 2</caption>
-<thead>
-	<tr><th></th><th scope=col>Taxon</th><th scope=col>Confidence</th></tr>
-	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
-</thead>
-<tbody>
-	<tr><th scope=row>OTU.1</th><td>d__Eukaryota;p__Chordata;c__Actinopteri;o__Scombriformes;f__Gempylidae;g__Thyrsites;s__Thyrsites_atun              </td><td>1.0000000</td></tr>
-	<tr><th scope=row>OTU.2</th><td>d__Eukaryota;p__Chordata;c__Actinopteri;o__Mugiliformes;f__Mugilidae;g__Aldrichetta;s__Aldrichetta_forsteri        </td><td>0.9999999</td></tr>
-	<tr><th scope=row>OTU.3</th><td>d__Eukaryota;p__Chordata;c__Actinopteri;o__Perciformes;f__Bovichtidae;g__Bovichtus;s__Bovichtus_variegatus         </td><td>0.9999979</td></tr>
-	<tr><th scope=row>OTU.4</th><td>d__Eukaryota;p__Chordata;c__Actinopteri;o__Blenniiformes;f__Tripterygiidae;g__Forsterygion;s__Forsterygion_lapillum</td><td>1.0000000</td></tr>
-	<tr><th scope=row>OTU.5</th><td>d__Eukaryota;p__Chordata;c__Actinopteri;o__Labriformes;f__Labridae;g__Notolabrus;s__Notolabrus_fucicola            </td><td>0.9996494</td></tr>
-	<tr><th scope=row>OTU.6</th><td>d__Eukaryota;p__Chordata;c__Actinopteri;o__Blenniiformes;f__Tripterygiidae;g__Forsterygion;s__Forsterygion_lapillum</td><td>1.0000000</td></tr>
-</tbody>
-</table>
-
-
-
-You can see that the taxonomic lineage is in one column. We will run a pipe to split each taxonomic rank into separate columns, and also take out the Qiime-style title for each rank (e.g. 'd__'). Finally, we will convert the data frame into a matrix so it is readable by Phyloseq.
-
-
-```r
-# First we have to provide names for the new columns
-ranks <- c("kingdom","phylum","class","order","family","genus","species")
-```
-
-
-```r
-taxonomy <- import_taxa %>%
-  mutate_at('Taxon',str_replace_all, "[a-z]__","") %>%
-  separate(Taxon, sep = ';', into=ranks,remove = TRUE) %>%
-  as.matrix()
-head(taxonomy)
+```R
+taxonomy <- as.matrix(import_taxa)
 ```
 
 ```
@@ -189,11 +169,9 @@ head(taxonomy)
 </tbody>
 </table>
 
-
-
+Create a taxonomy class object
 
 ```r
-# Create a taxonomy class object
 TAX <- tax_table(taxonomy)
 ```
 
@@ -255,10 +233,9 @@ tail(metadata)
 </table>
 
 
-
+Create a Phyloseq sample_data-class
 
 ```r
-# Create a Phyloseq sample_data-class
 META <- sample_data(metadata)
 ```
 
@@ -302,13 +279,14 @@ pseq <- phyloseq(OTU,TAX,META,otu_tree)
 pseq
 ```
 
-
+```
     phyloseq-class experiment-level object
     otu_table()   OTU Table:         [ 33 taxa and 11 samples ]
     sample_data() Sample Data:       [ 11 samples by 8 sample variables ]
     tax_table()   Taxonomy Table:    [ 33 taxa by 8 taxonomic ranks ]
     phy_tree()    Phylogenetic Tree: [ 33 tips and 32 internal nodes ]
-
+```
+{: output}
 
 <br>
 
@@ -318,7 +296,6 @@ Now that we have our Phyloseq object, we will take a look at it. One of the firs
 
 
 ```r
-# rarefaction
 rarecurve(t(otu_table(pseq)), step=50, cex=1)
 ```
 
@@ -338,7 +315,6 @@ plot_bar(pseq)
 
 
 ```r
-# some basic stats
 print(min(sample_sums(pseq)))
 print(max(sample_sums(pseq)))
 ```
@@ -359,6 +335,7 @@ From the initial look at the data, it is obvious that the sample AS3 has about t
 pseq.rarefied <- rarefy_even_depth(pseq, rngseed=1, sample.size=0.9*min(sample_sums(pseq)), replace=F)
 ```
 
+```
     `set.seed(1)` was used to initialize repeatable random subsampling.
     
     Please record this for your records so others can reproduce.
@@ -366,7 +343,8 @@ pseq.rarefied <- rarefy_even_depth(pseq, rngseed=1, sample.size=0.9*min(sample_s
     Try `set.seed(1); .Random.seed` for the full vector
     
     ...
-    
+```
+{: .output}
 
 
 
@@ -398,6 +376,17 @@ saveRDS(pseq, 'fish_phyloseq.rds')
 saveRDS(pseq.rarefied, 'fish_phyloseq_rarefied.rds')
 ```
 
+To later read the Phyloseq object into your R session:
+
+```R
+# first the original
+physeq <- readRDS('fish_phyloseq.rds')
+print(physeq)
+```
+
+
+
+
 ### Saving a graph to file
 
 
@@ -427,5 +416,9 @@ dev.off()
 
 
 <strong>pdf:</strong> 2
+
+
+
+
 
 {% include links.md %}
