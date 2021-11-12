@@ -3,11 +3,13 @@ title: "Introduction to Qiime"
 teaching: 10
 exercises: 5
 questions:
-- "Key question (FIXME)"
+- "How do I import today's results into Qiime?"
 objectives:
-- "First learning objective. (FIXME)"
+- "Identify the main components of metabarcoding and how to integrate them into a Qiime workflow"
 keypoints:
-- "First key point. Brief Answer to questions. (FIXME)"
+- "Once you import your results into Qiime, you can run any analysis with that program"
+- "The OTU fasta file that we created today are equivalent to 'rep-seqs' (representative sequences) in Qiime"
+- "The frequency table we created is called a 'FeatureTable' in Qiime parlance"
 ---
 
 
@@ -53,27 +55,12 @@ Here is a link to the resources on the <a href="https://docs.qiime2.org/2021.4/"
 
 ## Getting started: importing files into Qiime2 format
 
-We first need to import the files produced in this morning's lesson into the Qiime2 format so they can be processed. In the command line, we will first go to the `taxonomy` folder and load the Qiime2 module:
-
-```bash
-$ pwd
-```
-
-```
-/home/username/obss_2021/edna/
-```
-{: .output}
-
-```bash
-$ cd taxonomy
-```
-
->Otherwise, `cd ~/obss_2021/edna/taxonomy`
+In the command line, we will first load the Qiime2 module:
 
 
 ```bash
 $ module purge
-$ module load QIIME2/2021.2
+$ module load QIIME2/2021.4
 ```
 
 To see the options for any Qiime2 command, you can use help:
@@ -98,29 +85,19 @@ Sometimes it is necessary to specify the format of the input file. We can view t
 $ qiime tools import --show-importable-formats
 ```
 
-These two arguments provide a good guide when you are trying to figure out kind of file you are importing
+These two arguments provide a good guide when you are trying to figure out the kind of file you are importing
 
 
-### Importing OTU fasta file and frequency table
+## Importing OTU fasta file and frequency table
 
-Now we will write scripts to import the OTU fasta file and frequency table. Create a text file called `import_otu_to_qiime.sh` in the `scripts` folder. 
-
-In addition to the shebang on the first line, add a line to load the qiime module:
+To import the outputs of the Denoising and clustering lesson
 
 
 ```bash
-module load QIIME2/2021.2
+module load QIIME2/2021.4
 ```
 
-The script will move to the otus folder to run the command:
-
-```bash
-cd ../otus
-```
-
-Now we will add the Qiime command. For this step, we will introduce a new way of adding the command. When we have commands with a fair number of arguments, we can split this across multiple lines. This makes it easier to read. 
-
-Type the Qiime import command like this:
+The Qiime import command (substitute the name of your otu file):
 
 
 ```bash
@@ -130,20 +107,14 @@ qiime tools import \
   --output-path otus.qza
 ```
 
-You will add a backwards slash after every line (`\`). This tells the script to continue the command on to the next line. It is important not to have any characters, even spaces, after the backslash, or the script will think that the next line is a new command, and not a continuation of the original command. This can lead to some weird error messages, but you will learn how to fix this problem.
-
-
-Once you have your script, save it and make it executable (REVIEW: `chmod a+x SCRIPTNAME`). Then run it in the terminal
-
-```bash
-./import_otu_to_qiime.sh
-```
-
-If the script worked then you should have a file called `otus.qza` in your `/otus` folder. All Qiime artifacts end in `.qza`, and all visuals end in `.qzv`.
 
 
 
-We cannot import the frequency table directly into Qiime. First we have to convert our table into the `biom` format. Then the biom format will be imported to Qiime. Create a script called `import_freq_table_to_qiime.sh` in your scripts folder. Add the shebang, `cd` and qiime module lines, and then put these commands:
+If the command/script worked then you should have a file called `otus.qza` in your `/otus` folder. All Qiime artifacts end in `.qza`, and all visuals end in `.qzv`.
+
+
+
+We cannot import the frequency table directly into Qiime. First we have to convert our table into the `biom` format. Then the biom format will be imported to Qiime. Create a script called `import_freq_table_to_qiime.sh` and then put these commands:
 
 ```
 biom convert -i otu_frequency_table.tsv \
@@ -160,10 +131,29 @@ qiime tools import \
 
 The output of this script should be two files: a `.biom` file and a qiime `.qza` frequency table file. 
 
+## Importing taxonomy files into Qiime
+
+import taxonomy output (with converter script)
+
+import reference files
+
+
+## Using your imported files in Qiime
+
+Now that you have your 
+
+
+### Taxonomy assignment with Qiime
+
+<a href="https://docs.qiime2.org/2021.8/tutorials/moving-pictures/#taxonomic-analysis" target="_blank" rel="noopener noreferrer"><b>basic taxonomic analysis tutorial</b></a>
+
+### Diversity analyses with Qiime
+
+<a href="https://docs.qiime2.org/2021.8/tutorials/moving-pictures/#alpha-and-beta-diversity-analysis" target="_blank" rel="noopener noreferrer"><b>Alpha and beta diversity analysis tutorial</b></a>
 
 
 
-## Create a phylogeny from OTUs
+#### Create a phylogeny from OTUs
 
 There is one last example script. This is to align and create a phylogenetic tree from the OTUs. This can be done with separate commands, but Qiime provides a pipeline that 1) aligns the OTUs, 2) mask uninformative or ambiguous sites in the alignment, 3) infers a phylogenetic tree from the alignment, and then 4) roots the tree at the midpoint. You can check all the options at the <a href="https://docs.qiime2.org/2021.4/plugins/available/phylogeny/align-to-tree-mafft-fasttree/" target="_blank" rel="noopener noreferrer"><b>Plugin page</b></a>. You can also run these commands separately. There are other options for phylogeny, including inferring phylogeny with the **iqtree** and **RaXMl** programs. Have a look at all the options <a href="https://docs.qiime2.org/2021.4/plugins/available/phylogeny/" target="_blank" rel="noopener noreferrer"><b>on the main Phylogeny plugin page</b></a>. These tools can come in handy for multiple applications.  
 
