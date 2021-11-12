@@ -15,7 +15,9 @@ keypoints:
 
 The Qiime2 package is an open-source system that incorporates multiple, stand-alone programs, giving you many options to run your analysis. The different programs are provided as plug-ins to provide maximum flexibility. The <a href="https://docs.qiime2.org/2021.4/" target="_blank" rel="noopener noreferrer"><b>Qiime2 docs webpage</b></a> has all the information you need to get started on processing metabarcoding data. There are multiple tutorials available, including a <a href="https://docs.qiime2.org/2021.4/tutorials/overview/" target="_blank" rel="noopener noreferrer"><b>detailed overview</b></a> of the available plugins and links to the concepts involved. 
 
-It is possible to run the entirety of your analysis within the Qiime2 system, but today we will just show how we incorporate one of its components, taxonomy assignment, into our workflow. Today, we will just give a quick guided tour of the system. This is only a starting point, and after this you should be able to go and try any of the other tutorials on the website with your own data.
+It is possible to run the entirety of your analysis within the Qiime2 system, but today we will just show how to import the results of the earlier lessons into the Qiime format, and then you will be able to follow most of the tutorials on the website. 
+
+First, here is a quick guided tour of the system. 
 
 <br>
 
@@ -26,43 +28,6 @@ Here is an overview of the Qiime2 workflow:
 
 <br>
 
-
-### Risk of 'copy/paste' tutorials
-
-Going through the tutorial, merely copying and pasting the commands:
-
-![alt text](../fig/copyPaste.png)
-
-<br>
-
-...Has the risk of not absorbing the information as you go through:
-
-<br><br>
-
-
-![alt text](../fig/blackBox.png)
-
-<br>
-
-The problem is that often you do not want to start at the beginning or finish at the end
-
-![alt text](../fig/customWorkflow.png)
-
-<br>
-
-This workshop will attempt to help you work through many of the examples yourself, so you will be able to better utilise the resources.
-
-<br><br>
-
-## Tour of Qiime2 website
-
-Now we will look over the resources on the <a href="https://docs.qiime2.org/2021.4/" target="_blank" rel="noopener noreferrer"><b>Qiime2 website</b></a> 
-![alt text](../fig/quickTour.png)
-
-<br><br>
-
-### Qiime2 basics
-
 One of the main concepts of using Qiime is that all data is represented by what they refer to as <a href="https://docs.qiime2.org/2021.4/concepts/#data-files-qiime-2-artifacts" target="_blank" rel="noopener noreferrer"><i>"artifacts"</i></a>, which are actually compressed folders that contain the data and metadata about the data. This is done so that all data files are tracked and logged through the system. In order to use Qiime data must be imported into their system; as well, to use the outputs of Qiime in other programs they must be exported (though some visuals provide a way to download flat files of some outputs). 
 
 
@@ -70,15 +35,19 @@ One of the main concepts of using Qiime is that all data is represented by what 
 
 <br>
 
-Here is an example process, with outputs and visualisations added so you can see how you can monitor the progress.
+Often you do not want to start at the beginning or finish at the end of a pipeline. Once you are able to import today's results, you will be able to start where you wish.
 
-![alt text](../fig/exampleProcess.png) 
+![alt text](../fig/customWorkflow.png)
+
 
 <br><br>
 
-And here is the same process, with exports to flat files
+## Tour of Qiime2 website
 
-![alt text](../fig/exampleFlat.png)
+Here is a link to the resources on the <a href="https://docs.qiime2.org/2021.4/" target="_blank" rel="noopener noreferrer"><b>Qiime2 website</b></a> 
+![alt text](../fig/quickTour.png)
+
+<br><br>
 
 
 
@@ -196,7 +165,7 @@ The output of this script should be two files: a `.biom` file and a qiime `.qza`
 
 ## Create a phylogeny from OTUs
 
-There is one last script we will run before we move on to taxonomy assignment. This is to align and create a phylogenetic tree from the OTUs. This can be done with separate commands, but Qiime provides a pipeline that 1) aligns the OTUs, 2) mask uninformative or ambiguous sites in the alignment, 3) infers a phylogenetic tree from the alignment, and then 4) roots the tree at the midpoint. You can check all the options at the <a href="https://docs.qiime2.org/2021.4/plugins/available/phylogeny/align-to-tree-mafft-fasttree/" target="_blank" rel="noopener noreferrer"><b>Plugin page</b></a>. You can also run these commands separately. There are other options for phylogeny, including inferring phylogeny with the **iqtree** and **RaXMl** programs. Have a look at all the options <a href="https://docs.qiime2.org/2021.4/plugins/available/phylogeny/" target="_blank" rel="noopener noreferrer"><b>on the main Phylogeny plugin page</b></a>. These tools can come in handy for multiple applications.  
+There is one last example script. This is to align and create a phylogenetic tree from the OTUs. This can be done with separate commands, but Qiime provides a pipeline that 1) aligns the OTUs, 2) mask uninformative or ambiguous sites in the alignment, 3) infers a phylogenetic tree from the alignment, and then 4) roots the tree at the midpoint. You can check all the options at the <a href="https://docs.qiime2.org/2021.4/plugins/available/phylogeny/align-to-tree-mafft-fasttree/" target="_blank" rel="noopener noreferrer"><b>Plugin page</b></a>. You can also run these commands separately. There are other options for phylogeny, including inferring phylogeny with the **iqtree** and **RaXMl** programs. Have a look at all the options <a href="https://docs.qiime2.org/2021.4/plugins/available/phylogeny/" target="_blank" rel="noopener noreferrer"><b>on the main Phylogeny plugin page</b></a>. These tools can come in handy for multiple applications.  
 
 ```
 qiime phylogeny align-to-tree-mafft-fasttree \
