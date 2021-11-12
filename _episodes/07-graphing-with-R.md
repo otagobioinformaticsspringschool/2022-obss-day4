@@ -30,7 +30,7 @@ plot_bar(physeq, fill='genus')
 
 
     
-![png](output_18_0.png)
+![png](../fig/output_18_0.png)
     
 
 
@@ -43,7 +43,7 @@ plot_bar(physeq.rarefied, fill='genus')
 
 
     
-![png](output_20_0.png)
+![png](../fig/output_20_0_07.png)
     
 
 You can collapse the frequency counts across metadata categories, such as location
@@ -55,7 +55,7 @@ plot_bar(physeq.rarefied, x='location', fill='genus')
 
 
     
-![png](output_22_0.png)
+![png](../fig/output_22_0.png)
     
 
 > ### Exercise: collapse counts around temperature
@@ -88,7 +88,7 @@ Now we will try to add ggplot elements to the graph
 >> barplot1 + facet_wrap(~location, scales="free_x",nrow=1)
 >> ```
 >>     
->> ![png](output_25_0.png)
+>> ![png](../fig/output_25_0_07.png)
 >>     
 > {: .solution}
 {: .challenge}
