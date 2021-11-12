@@ -107,11 +107,7 @@ qiime tools import \
   --output-path otus.qza
 ```
 
-
-
-
 If the command/script worked then you should have a file called `otus.qza` in your `/otus` folder. All Qiime artifacts end in `.qza`, and all visuals end in `.qzv`.
-
 
 
 We cannot import the frequency table directly into Qiime. First we have to convert our table into the `biom` format. Then the biom format will be imported to Qiime. Create a script called `import_freq_table_to_qiime.sh` and then put these commands:
@@ -131,31 +127,125 @@ qiime tools import \
 
 The output of this script should be two files: a `.biom` file and a qiime `.qza` frequency table file. 
 
+<br>
+
 ## Importing taxonomy files into Qiime
 
 import taxonomy output (with converter script)
 
-import reference files
 
+Qiime has several methods to assign taxonomy to your OTUs (see Lesson 4). In order to run these, you must first convert the reference database to a Qiime flat file format, and then import it to Qiime. For the first part, you can use the `tax_format` tool in the Crabs program. If you have not done so, run the command to convert the reference file.
+
+```
+crabs_v1.0.1 tax_format \
+  --input ref_fasta.fasta \
+  --output ref_qiime \
+  --format qiif
+```
+
+You will notice that Crabs has split the original file into two separate files. One of these is a fasta file with the sequences and sequence ID, and the other is a table that has the taxonomic lineage for each sequence ID. Now you can import each of these files into Qiime.
+
+```
+qiime tools import \
+  --type 'FeatureData[Sequence]' \
+  --input-path qiime_ref.fasta \
+  --output-path qiime.refseqs.qza
+
+qiime tools import \
+  --type 'FeatureData[Taxonomy]' \
+  --input-format HeaderlessTSVTaxonomyFormat \
+  --input-path qiime_ref.taxon \
+  --output-path qiime.taxon.qza
+```
+
+Now you are ready to assign taxonomy using either the BLAST or VSEARCH methods (see below). If you would like to run the Naive Bayes method, there is one further step, which is to train the sequences using a machine learning algorithm. However, as this takes time, one has been prepared for this course: `lrRNA_fish_db_classifier.qza`
+
+For future reference, here is an example training command:
+
+```
+qiime feature-classifier fit-classifier-naive-bayes \
+  --i-reference-reads otus.qza \
+  --i-reference-taxonomy qiime.taxon.qza \
+  --o-classifier lrRNA_fish_db_classifier.qza \
+  --verbose
+```
+
+<br><br>
 
 ## Using your imported files in Qiime
 
-Now that you have your 
+Now that you have all your outputs in Qiime format, you can use them for most of the tutorials on the Qiime web page. 
 
 
 ### Taxonomy assignment with Qiime
 
-<a href="https://docs.qiime2.org/2021.8/tutorials/moving-pictures/#taxonomic-analysis" target="_blank" rel="noopener noreferrer"><b>basic taxonomic analysis tutorial</b></a>
+You can run three different methods in Qiime to do taxonomy assignment. For one example, see the <a href="https://docs.qiime2.org/2021.8/tutorials/moving-pictures/#taxonomic-analysis" target="_blank" rel="noopener noreferrer"><b>basic taxonomic analysis tutorial</b></a>. Below are examples for each of the methods, indicating which of our imported files to use.
+
+**BLAST Taxonomy Assignment**
+
+```
+qiime feature-classifier classify-consensus-blast \
+  --i-query otus.qza \
+  --i-reference-reads qiime.refseqs.qza \
+  --i-reference-taxonomy qiime.taxon.qza \
+  --o-classification blast_output_taxonomy.qza \
+  --verbose
+```
+
+See the  <a href="https://docs.qiime2.org/2021.8/plugins/available/feature-classifier/classify-consensus-blast/" target="_blank" rel="noopener noreferrer"><b>classify-consensus-blast plugin page</b></a> for explanation of parameters and additional options
+
+
+**VSEARCH Taxonomy Assignment**
+
+```
+qiime feature-classifier classify-consensus-vsearch \
+  --i-query otus.qza \
+  --i-reference-reads qiime.refseqs.qza \
+  --i-reference-taxonomy qiime.taxon.qza \
+  --o-classification vsearch_output_taxonomy.qza \
+  --verbose
+```
+
+See the  <a href="https://docs.qiime2.org/2021.8/plugins/available/feature-classifier/classify-consensus-vsearch/" target="_blank" rel="noopener noreferrer"><b>classify-consensus-vsearch plugin page</b></a> for explanation of parameters and additional options
+
+
+**Naive Bayes Taxonomy Assignment**
+
+```
+qiime feature-classifier classify-sklearn \
+  --i-reads otus.qza \
+  --i-classifier lrRNA_fish_db_classifier.qza \
+  --o-classification nb_output_taxonomy.qza \
+  --verbose
+```
+
+See the  <a href="https://docs.qiime2.org/2021.8/plugins/available/feature-classifier/classify-sklearn/" target="_blank" rel="noopener noreferrer"><b>classify-sklearn plugin page</b></a> for explanation of parameters and additional options
+
+<br><br>
 
 ### Diversity analyses with Qiime
 
-<a href="https://docs.qiime2.org/2021.8/tutorials/moving-pictures/#alpha-and-beta-diversity-analysis" target="_blank" rel="noopener noreferrer"><b>Alpha and beta diversity analysis tutorial</b></a>
+There are many analyses included in Qiime for doing community ecology statistics, including alpha and beta diversity. You can see an example in the <a href="https://docs.qiime2.org/2021.8/tutorials/moving-pictures/#alpha-and-beta-diversity-analysis" target="_blank" rel="noopener noreferrer"><b>Alpha and beta diversity analysis tutorial</b></a>. 
+
+The main files that are used for most of Qiime's diversity analyses are the frequency table and the sample metadata file. So, once you have imported the frequency table you can run many analyses (the sample metadata file is one of the few in the Qiime multiverse that remains in flat file format). Qiime has a pipeline command that will run multiple alpha and beta diversity metrics in one go, outputting everything to a separate folder. 
+
+The only other statistic that you will need for this is the sampling depth, which is the number that was used for rarefaction in Lesson 06 (90% of the lowest sample number, or XX)
+
+```
+qiime diversity core-metrics \
+  --i-table table.qza \
+  --p-sampling-depth XX \
+  --m-metadata-file sample_metadata.tsv \
+  --output-dir core-metrics-results
+```
+
+The outputs will all be in a folder called `core-metrics-results`.
 
 
 
 #### Create a phylogeny from OTUs
 
-There is one last example script. This is to align and create a phylogenetic tree from the OTUs. This can be done with separate commands, but Qiime provides a pipeline that 1) aligns the OTUs, 2) mask uninformative or ambiguous sites in the alignment, 3) infers a phylogenetic tree from the alignment, and then 4) roots the tree at the midpoint. You can check all the options at the <a href="https://docs.qiime2.org/2021.4/plugins/available/phylogeny/align-to-tree-mafft-fasttree/" target="_blank" rel="noopener noreferrer"><b>Plugin page</b></a>. You can also run these commands separately. There are other options for phylogeny, including inferring phylogeny with the **iqtree** and **RaXMl** programs. Have a look at all the options <a href="https://docs.qiime2.org/2021.4/plugins/available/phylogeny/" target="_blank" rel="noopener noreferrer"><b>on the main Phylogeny plugin page</b></a>. These tools can come in handy for multiple applications.  
+There is one last example script. This is to align and create a phylogenetic tree from the OTUs. This can be done with separate commands, but Qiime provides a pipeline that 1) aligns the OTUs, 2) mask uninformative or ambiguous sites in the alignment, 3) infers a phylogenetic tree from the alignment, and then 4) roots the tree at the midpoint. You can check all the options at the <a href="https://docs.qiime2.org/2021.8/plugins/available/phylogeny/align-to-tree-mafft-fasttree/" target="_blank" rel="noopener noreferrer"><b>Plugin page</b></a>. You can also run these commands separately. There are other options for phylogeny, including inferring phylogeny with the **iqtree** and **RaXMl** programs. Have a look at all the options <a href="https://docs.qiime2.org/2021.48plugins/available/phylogeny/" target="_blank" rel="noopener noreferrer"><b>on the main Phylogeny plugin page</b></a>. These tools can come in handy for multiple applications.  
 
 ```
 qiime phylogeny align-to-tree-mafft-fasttree \
@@ -166,6 +256,16 @@ qiime phylogeny align-to-tree-mafft-fasttree \
   --o-rooted-tree rooted-tree.qza
 ```
 
-Later we will learn how to export Qiime-formatted artifacts. 
+Once you have the phylogeny of the OTUs, you can run the diversity metrics again using unifrac distances:
+
+```
+qiime diversity core-metrics-phylogenetic \
+  --i-phylogeny rooted-tree.qza \
+  --i-table table.qza \
+  --p-sampling-depth XX \
+  --m-metadata-file sample-metadata.tsv \
+  --output-dir core-metrics-phylogenetic-results
+```
+
 
 {% include links.md %}

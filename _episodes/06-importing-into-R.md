@@ -329,9 +329,9 @@ print(max(sample_sums(pseq)))
 
 From the initial look at the data, it is obvious that the sample AS3 has about twice as many reads as any of the other samples. We can use rarefaction to simulate an even number of reads per sample. Rarefying the data is preferred for some analyses, though there is some debate. We will create a rarefied version of the Phyloseq object.
 
+we will rarefy the data around 90% of the lowest sample
 
 ```r
-# we will rarefy the data around 90% of the lowest sample
 pseq.rarefied <- rarefy_even_depth(pseq, rngseed=1, sample.size=0.9*min(sample_sums(pseq)), replace=F)
 ```
 

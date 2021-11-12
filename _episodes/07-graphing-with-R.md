@@ -6,9 +6,11 @@ questions:
 - "How do I use ggplot and other programs with Phyloseq?"
 - "What statistical approaches do I use to explore my metabarcoding results?"
 objectives:
-- 
+- "Create bar plots of taxonomy and use them to show differences across the metadata"
+- "Create distance ordinations and use them to make PCoA plots"
+- "Make subsets of the data to explore specific aspects of your results"
 keypoints:
-- 
+- "The Phyloseq package has many useful features to conduct statistical analyses of your data"
 ---
 
 In this lesson there are several examples for plotting the results of your analysis. As mentioned in the previous lesson, here are some links with additional graphing examples:
@@ -108,7 +110,7 @@ Now we will try to add ggplot elements to the graph
 >> barplot2
 >> ```
 >>     
->> ![png](output_28_0.png)
+>> ![png](../fig/output_28_0_07.png)
 >>     
 > {: .solution}
 {: .challenge}
@@ -210,7 +212,7 @@ bc_dist <- distance(physeq.rarefied, method = "bray", binary = FALSE)
 >> ## Solution
 >> 
 >> ```R
->> plot_locTemp <- plot_ordination(physeq.rarefied, qual_ord, color="location", shape='temperature', title="Jaccard Location and Temperature") + 
+>> plot_locTemp <- plot_ordination(physeq.rarefied, quant_ord, color="location", shape='temperature', title="Jaccard Location and Temperature") + 
 >> theme(aspect.ratio=1) + 
 >> geom_point(size=4)
 >> 
@@ -222,6 +224,128 @@ bc_dist <- distance(physeq.rarefied, method = "bray", binary = FALSE)
 > {: .solution}
 {: .challenge}
 
+<br>
+
+## Permutational ANOVA
+
+Phyloseq includes the `adonis` function to run a PERMANOVA to determine if OTUs from specific metadata fields are significantly different from each other. 
+
+
+```R
+adonis(quant_dist ~ sample_data(physeq.rarefied)$location)
+```
+
+
+```
+    Call:
+    adonis(formula = quant_dist ~ sample_data(physeq.rarefied)$location) 
+    
+    Permutation: free
+    Number of permutations: 999
+    
+    Terms added sequentially (first to last)
+    
+                                          Df SumsOfSqs  MeanSqs F.Model      R2
+    sample_data(physeq.rarefied)$location  1   0.13144 0.131438   5.938 0.39751
+    Residuals                              9   0.19921 0.022135         0.60249
+    Total                                 10   0.33065                  1.00000
+                                          Pr(>F)   
+    sample_data(physeq.rarefied)$location  0.002 **
+    Residuals                                      
+    Total                                          
+    ---
+    Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+```
+{: .output}
+
+
+> ### Is temperature significantly different?
+> 
+> Run PERMANOVA on the temperature variable
+> 
+>> ## Solution
+>> 
+>> ```R
+>> adonis(quant_dist ~ sample_data(physeq.rarefied)$temperature)
+>> ```
+>> 
+>> ```
+>>     Call:
+>>     adonis(formula = quant_dist ~ sample_data(physeq.rarefied)$temperature) 
+>>     
+>>     Permutation: free
+>>     Number of permutations: 999
+>>     
+>>     Terms added sequentially (first to last)
+>>     
+>>                                              Df SumsOfSqs  MeanSqs F.Model      R2
+>>     sample_data(physeq.rarefied)$temperature  2   0.06606 0.033031 0.99869 0.19979
+>>     Residuals                                 8   0.26459 0.033074         0.80021
+>>     Total                                    10   0.33065                  1.00000
+>>                                              Pr(>F)
+>>     sample_data(physeq.rarefied)$temperature  0.441
+>>     Residuals                                      
+>>     Total                                          
+>> ```
+>> {: .output}
+>> 
+>> Temperature is not significantly different across samples
+> {: .solution}
+{: .challenge}
+
+
+## Subsetting data
+
+It is possible to take subsets of the Phyloseq object you have created. You can subset by taxa or samples. 
+
+
+### Subsetting by taxonomy
+
+Often there are so many taxonomic groups represented, that it is useful to create a subset of the data that contains only OTUs belonging to a taxonomic rank. This is done with the `subset_taxa` function. In the example dataset provided, there are not too many taxa included, but for larger datasets this can be very useful
+
+
+```R
+scomb <- subset_taxa(physeq, order=='Scombriformes')
+```
+
+the subsetted database is still a valid Phyloseq object:
+
+```R
+scomb
+```
+
+```
+    phyloseq-class experiment-level object
+    otu_table()   OTU Table:         [ 3 taxa and 11 samples ]
+    sample_data() Sample Data:       [ 11 samples by 8 sample variables ]
+    tax_table()   Taxonomy Table:    [ 3 taxa by 8 taxonomic ranks ]
+    phy_tree()    Phylogenetic Tree: [ 3 tips and 2 internal nodes ]
+```
+{: .output}
+
+
+```R
+plot_bar(scomb, fill='species')
+```
+
+
+    
+![png](../fig/output_31_0.png)
+    
+
+
+> ## Exercise: take a subset of a taxon and plot it
+> 
+> 
+{: .challenge}
+
+
+### Subset samples
+
+
+
+
+## Merge OTUs by taxa
 
 
 
