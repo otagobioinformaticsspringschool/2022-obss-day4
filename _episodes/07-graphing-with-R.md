@@ -339,13 +339,194 @@ plot_bar(scomb, fill='species')
 > 
 {: .challenge}
 
+<br>
 
 ### Subset samples
 
+Now we will try to make a subset of the Phyloseq object based on a field from the sample metadata table. 
+
+First, let's look at the metadata:
+
+```R
+sample_data(physeq)
+```
+
+<table class="dataframe">
+<caption>A sample_data: 11 × 8</caption>
+<thead>
+	<tr><th></th><th scope=col>fwd_barcode</th><th scope=col>rev_barcode</th><th scope=col>forward_primer</th><th scope=col>reverse_primer</th><th scope=col>location</th><th scope=col>temperature</th><th scope=col>salinity</th><th scope=col>sample</th></tr>
+	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;chr&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>AM1</th><td>GAAGAG</td><td>TAGCGTCG</td><td>GACCCTATGGAGCTTTAGAC</td><td>CGCTGTTATCCCTADRGTAACT</td><td>mudflats</td><td>12</td><td>32</td><td>AM1</td></tr>
+	<tr><th scope=row>AM2</th><td>GAAGAG</td><td>TCTACTCG</td><td>GACCCTATGGAGCTTTAGAC</td><td>CGCTGTTATCCCTADRGTAACT</td><td>mudflats</td><td>14</td><td>32</td><td>AM2</td></tr>
+	<tr><th scope=row>AM3</th><td>GAAGAG</td><td>ATGACTCG</td><td>GACCCTATGGAGCTTTAGAC</td><td>CGCTGTTATCCCTADRGTAACT</td><td>mudflats</td><td>12</td><td>32</td><td>AM3</td></tr>
+	<tr><th scope=row>AM4</th><td>GAAGAG</td><td>ATCTATCG</td><td>GACCCTATGGAGCTTTAGAC</td><td>CGCTGTTATCCCTADRGTAACT</td><td>mudflats</td><td>10</td><td>32</td><td>AM4</td></tr>
+	<tr><th scope=row>AM5</th><td>GAAGAG</td><td>ACAGATCG</td><td>GACCCTATGGAGCTTTAGAC</td><td>CGCTGTTATCCCTADRGTAACT</td><td>mudflats</td><td>12</td><td>34</td><td>AM5</td></tr>
+	<tr><th scope=row>AM6</th><td>GAAGAG</td><td>ATACTGCG</td><td>GACCCTATGGAGCTTTAGAC</td><td>CGCTGTTATCCCTADRGTAACT</td><td>mudflats</td><td>10</td><td>34</td><td>AM6</td></tr>
+	<tr><th scope=row>AS2</th><td>GAAGAG</td><td>AGATACTC</td><td>GACCCTATGGAGCTTTAGAC</td><td>CGCTGTTATCCCTADRGTAACT</td><td>shore   </td><td>12</td><td>32</td><td>AS2</td></tr>
+	<tr><th scope=row>AS3</th><td>GAAGAG</td><td>ATGCGATG</td><td>GACCCTATGGAGCTTTAGAC</td><td>CGCTGTTATCCCTADRGTAACT</td><td>shore   </td><td>12</td><td>32</td><td>AS3</td></tr>
+	<tr><th scope=row>AS4</th><td>GAAGAG</td><td>TGCTACTC</td><td>GACCCTATGGAGCTTTAGAC</td><td>CGCTGTTATCCCTADRGTAACT</td><td>shore   </td><td>10</td><td>34</td><td>AS4</td></tr>
+	<tr><th scope=row>AS5</th><td>GAAGAG</td><td>ACGTCATG</td><td>GACCCTATGGAGCTTTAGAC</td><td>CGCTGTTATCCCTADRGTAACT</td><td>shore   </td><td>14</td><td>34</td><td>AS5</td></tr>
+	<tr><th scope=row>AS6</th><td>GAAGAG</td><td>TCATGTCG</td><td>GACCCTATGGAGCTTTAGAC</td><td>CGCTGTTATCCCTADRGTAACT</td><td>shore   </td><td>10</td><td>34</td><td>AS6</td></tr>
+</tbody>
+</table>
+
+The command is similar to the `subset_taxa` command. For example, if we want to only analyse the samples found in the mudflats:
+
+```R
+mud <- subset_samples(physeq, location=='mudflats')
+
+mud
+```
+
+The output is still a Phyloseq object:
+
+```
+    phyloseq-class experiment-level object
+    otu_table()   OTU Table:         [ 33 taxa and 6 samples ]
+    sample_data() Sample Data:       [ 6 samples by 8 sample variables ]
+    tax_table()   Taxonomy Table:    [ 33 taxa by 8 taxonomic ranks ]
+    phy_tree()    Phylogenetic Tree: [ 33 tips and 32 internal nodes ]
+```
+{: .output}
+
+
+A taxonomy bar plot will only show the mudflats samples:
+
+```R
+plot_bar(mud, fill='genus')
+```
+
+
+![png](../fig/output_8_0.png)
+
+
+> ## Exercise: create a PCoA plot of the mudflats subset
+> 
+> Hint: is there anything that should be done with the data before plotting?
+> 
+>> ## Solution
+>> 
+>> First, rarefy the new dataset:
+>> 
+>> ```R
+>> mud.rarefied <- rarefy_even_depth(mud, rngseed=1, sample.size=0.9*min(sample_sums(mud)), replace=F)
+>> ```
+>> 
+>> Now, calculate the distance and ordination
+>> 
+>> ```R
+>> mud_dist <- distance(mud.rarefied, method = 'bray', binary=FALSE)
+>> 
+>> mud_ord <- ordinate(mud.rarefied, method="PCoA", distance=mud_dist)
+>> ```
+>> 
+>> Finally, plot the ordination
+>> 
+>> ```R
+>> plot_mud <- plot_ordination(mud.rarefied, mud_ord, color='temperature',shape='salinity', title="Mud Flats BC PCoA")+
+>> theme(aspect.ratio=1)+ geom_point(size=4)
+>> 
+>> plot_mud
+>> ```
+>> 
+>> ![png](../fig/output_12_0.png)
+> {: .solution}
+{: .challenge}
 
 
 
 ## Merge OTUs by taxa
 
+The final function we will present is to merge the OTUs by taxonomy. You will notice that there are often multiple OTUs that are assigned to a single species or genus. This can be due to multiple factors, such as sequence error, gaps in the reference database, or a species that varies in the target region. If you are interested in focusing on the taxonomy, then it is useful to merge OTUs that assign to the same taxon. Fortunately, Phyloseq provides a useful function to do this. 
+
+We will merge all OTUs at the lowest taxonomic level
+
+```R
+phyMerge <- tax_glom(physeq, taxrank = 'species',NArm = T)
+```
+
+Now have a look at the taxonomy table. You should see that there are fewer OTUs.
+
+```R
+tax_table(phyMerge)
+```
 
 
+<table class="dataframe">
+<caption>A taxonomyTable: 16 × 8 of type chr</caption>
+<thead>
+	<tr><th></th><th scope=col>kingdom</th><th scope=col>phylum</th><th scope=col>class</th><th scope=col>order</th><th scope=col>family</th><th scope=col>genus</th><th scope=col>species</th><th scope=col>Confidence</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>OTU.8</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri</td><td>Clupeiformes  </td><td>Clupeidae     </td><td>Sprattus    </td><td>Sprattus_muelleri      </td><td>NA</td></tr>
+	<tr><th scope=row>OTU.21</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri</td><td>Clupeiformes  </td><td>Clupeidae     </td><td>Sprattus    </td><td>Sprattus_antipodum     </td><td>NA</td></tr>
+	<tr><th scope=row>OTU.17</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri</td><td>Blenniiformes </td><td>Tripterygiidae</td><td>Enneanectes </td><td>Enneanectes_carminalis </td><td>NA</td></tr>
+	<tr><th scope=row>OTU.4</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri</td><td>Blenniiformes </td><td>Tripterygiidae</td><td>Forsterygion</td><td>Forsterygion_lapillum  </td><td>NA</td></tr>
+	<tr><th scope=row>OTU.11</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri</td><td>Osmeriformes  </td><td>Retropinnidae </td><td>Retropinna  </td><td>Retropinna_retropinna  </td><td>NA</td></tr>
+	<tr><th scope=row>OTU.10</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri</td><td>Beloniformes  </td><td>Hemiramphidae </td><td>Hyporhamphus</td><td>Hyporhamphus_melanochir</td><td>NA</td></tr>
+	<tr><th scope=row>OTU.3</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri</td><td>Perciformes   </td><td>Bovichtidae   </td><td>Bovichtus   </td><td>Bovichtus_variegatus   </td><td>NA</td></tr>
+	<tr><th scope=row>OTU.7</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri</td><td>Perciformes   </td><td>Nototheniidae </td><td>Notothenia  </td><td>Notothenia_angustata   </td><td>NA</td></tr>
+	<tr><th scope=row>OTU.2</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri</td><td>Mugiliformes  </td><td>Mugilidae     </td><td>Aldrichetta </td><td>Aldrichetta_forsteri   </td><td>NA</td></tr>
+	<tr><th scope=row>OTU.5</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri</td><td>Labriformes   </td><td>Labridae      </td><td>Notolabrus  </td><td>Notolabrus_fucicola    </td><td>NA</td></tr>
+	<tr><th scope=row>OTU.22</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri</td><td>Labriformes   </td><td>Odacidae      </td><td>Odax        </td><td>Odax_pullus            </td><td>NA</td></tr>
+	<tr><th scope=row>OTU.14</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri</td><td>Gadiformes    </td><td>Moridae       </td><td>Lotella     </td><td>Lotella_rhacina        </td><td>NA</td></tr>
+	<tr><th scope=row>OTU.23</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri</td><td>Gadiformes    </td><td>Moridae       </td><td>Pseudophycis</td><td>Pseudophycis_barbata   </td><td>NA</td></tr>
+	<tr><th scope=row>OTU.19</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri</td><td>Scombriformes </td><td>Trichiuridae  </td><td>Lepidopus   </td><td>Lepidopus_caudatus     </td><td>NA</td></tr>
+	<tr><th scope=row>OTU.1</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri</td><td>Scombriformes </td><td>Gempylidae    </td><td>Thyrsites   </td><td>Thyrsites_atun         </td><td>NA</td></tr>
+	<tr><th scope=row>OTU.12</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri</td><td>Myctophiformes</td><td>Myctophidae   </td><td>Hygophum    </td><td>Hygophum_hanseni       </td><td>NA</td></tr>
+</tbody>
+</table>
+
+
+> ## Exercise
+> 
+> In the previous example, you might have noticed that any OTU that was not resolved to species (i.e. 'NA' in the species column) was removed from the table. 
+> Try to rerun the function, keeping all the unresolved species. 
+> 
+>> ## Solution
+>> 
+>> ```R
+>> phyMergeNA <- tax_glom(physeq, taxrank = 'species',NArm = F)
+>> ```
+>> 
+>> 
+>> ```R
+>> tax_table(phyMergeNA)
+>> ```
+>> 
+>> <table class="dataframe">
+>> <caption>A taxonomyTable: 23 × 8 of type chr</caption>
+>> <thead>
+>> 	<tr><th></th><th scope=col>kingdom</th><th scope=col>phylum</th><th scope=col>class</th><th scope=col>order</th><th scope=col>family</th><th scope=col>genus</th><th scope=col>species</th><th scope=col>Confidence</th></tr>
+>> </thead>
+>> <tbody>
+>> 	<tr><th scope=row>OTU.33</th><td>Eukaryota</td><td>Chordata</td><td>NA            </td><td>NA            </td><td>NA            </td><td>NA          </td><td>NA                     </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.8</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Clupeiformes  </td><td>Clupeidae     </td><td>Sprattus    </td><td>Sprattus_muelleri      </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.21</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Clupeiformes  </td><td>Clupeidae     </td><td>Sprattus    </td><td>Sprattus_antipodum     </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.29</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Clupeiformes  </td><td>Clupeidae     </td><td>Sprattus    </td><td>NA                     </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.17</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Blenniiformes </td><td>Tripterygiidae</td><td>Enneanectes </td><td>Enneanectes_carminalis </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.4</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Blenniiformes </td><td>Tripterygiidae</td><td>Forsterygion</td><td>Forsterygion_lapillum  </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.11</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Osmeriformes  </td><td>Retropinnidae </td><td>Retropinna  </td><td>Retropinna_retropinna  </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.15</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Salmoniformes </td><td>Salmonidae    </td><td>Salmo       </td><td>NA                     </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.10</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Beloniformes  </td><td>Hemiramphidae </td><td>Hyporhamphus</td><td>Hyporhamphus_melanochir</td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.3</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Perciformes   </td><td>Bovichtidae   </td><td>Bovichtus   </td><td>Bovichtus_variegatus   </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.7</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Perciformes   </td><td>Nototheniidae </td><td>Notothenia  </td><td>Notothenia_angustata   </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.2</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Mugiliformes  </td><td>Mugilidae     </td><td>Aldrichetta </td><td>Aldrichetta_forsteri   </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.9</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>NA            </td><td>NA            </td><td>NA          </td><td>NA                     </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.5</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Labriformes   </td><td>Labridae      </td><td>Notolabrus  </td><td>Notolabrus_fucicola    </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.22</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Labriformes   </td><td>Odacidae      </td><td>Odax        </td><td>Odax_pullus            </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.31</th><td>Eukaryota</td><td>Chordata</td><td>Chondrichthyes</td><td>Rajiformes    </td><td>Rajidae       </td><td>Dipturus    </td><td>NA                     </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.14</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Gadiformes    </td><td>Moridae       </td><td>Lotella     </td><td>Lotella_rhacina        </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.23</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Gadiformes    </td><td>Moridae       </td><td>Pseudophycis</td><td>Pseudophycis_barbata   </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.28</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Gadiformes    </td><td>Moridae       </td><td>Pseudophycis</td><td>NA                     </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.19</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Scombriformes </td><td>Trichiuridae  </td><td>Lepidopus   </td><td>Lepidopus_caudatus     </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.1</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Scombriformes </td><td>Gempylidae    </td><td>Thyrsites   </td><td>Thyrsites_atun         </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.13</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Scombriformes </td><td>Centrolophidae</td><td>Seriolella  </td><td>NA                     </td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.12</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Myctophiformes</td><td>Myctophidae   </td><td>Hygophum    </td><td>Hygophum_hanseni       </td><td>NA</td></tr>
+>> </tbody>
+>> </table>
+>> 
+> {: .solution}
+{: .challenge}
