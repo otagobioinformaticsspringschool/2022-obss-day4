@@ -530,3 +530,46 @@ tax_table(phyMerge)
 >> 
 > {: .solution}
 {: .challenge}
+
+<br>
+
+> ## Exercise
+> 
+> What would happen if you set the `taxrank` parameter in the `tax_glom` function to a higher taxonomic level, like family?
+> 
+>> ## Solution
+>> 
+>> ```R
+>> phyMergeFAM <- tax_glom(physeq, taxrank = 'family',NArm = T)
+>> 
+>> tax_table(phyMerge1)
+>> ```
+>> 
+>> <table class="dataframe">
+>> <caption>A taxonomyTable: 16 × 8 of type chr</caption>
+>> <thead>
+>> 	<tr><th></th><th scope=col>kingdom</th><th scope=col>phylum</th><th scope=col>class</th><th scope=col>order</th><th scope=col>family</th><th scope=col>genus</th><th scope=col>species</th><th scope=col>Confidence</th></tr>
+>> </thead>
+>> <tbody>
+>> 	<tr><th scope=row>OTU.8</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Clupeiformes  </td><td>Clupeidae     </td><td>NA</td><td>NA</td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.4</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Blenniiformes </td><td>Tripterygiidae</td><td>NA</td><td>NA</td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.11</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Osmeriformes  </td><td>Retropinnidae </td><td>NA</td><td>NA</td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.15</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Salmoniformes </td><td>Salmonidae    </td><td>NA</td><td>NA</td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.10</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Beloniformes  </td><td>Hemiramphidae </td><td>NA</td><td>NA</td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.3</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Perciformes   </td><td>Bovichtidae   </td><td>NA</td><td>NA</td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.7</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Perciformes   </td><td>Nototheniidae </td><td>NA</td><td>NA</td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.2</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Mugiliformes  </td><td>Mugilidae     </td><td>NA</td><td>NA</td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.5</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Labriformes   </td><td>Labridae      </td><td>NA</td><td>NA</td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.22</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Labriformes   </td><td>Odacidae      </td><td>NA</td><td>NA</td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.31</th><td>Eukaryota</td><td>Chordata</td><td>Chondrichthyes</td><td>Rajiformes    </td><td>Rajidae       </td><td>NA</td><td>NA</td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.14</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Gadiformes    </td><td>Moridae       </td><td>NA</td><td>NA</td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.19</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Scombriformes </td><td>Trichiuridae  </td><td>NA</td><td>NA</td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.1</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Scombriformes </td><td>Gempylidae    </td><td>NA</td><td>NA</td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.13</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Scombriformes </td><td>Centrolophidae</td><td>NA</td><td>NA</td><td>NA</td></tr>
+>> 	<tr><th scope=row>OTU.12</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri   </td><td>Myctophiformes</td><td>Myctophidae   </td><td>NA</td><td>NA</td><td>NA</td></tr>
+>> </tbody>
+>> </table>
+>> 
+> {: .solution}
+{: .challenge}
+
