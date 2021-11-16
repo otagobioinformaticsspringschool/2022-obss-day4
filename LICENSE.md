@@ -5,8 +5,7 @@ root: .
 ---
 ## Instructional Material
 
-All Software Carpentry, Data Carpentry, and Library Carpentry instructional material is
-made available under the [Creative Commons Attribution
+The instructional material is was created by Hugh Cross and Gert-Jan Jeunen at the University of Otago and is made available under the [Creative Commons Attribution
 license][cc-by-human]. The following is a human-readable summary of
 (and not a substitute for) the [full legal text of the CC BY 4.0
 license][cc-by-legal].
@@ -25,11 +24,9 @@ Under the following terms:
 
 * **Attribution**---You must give appropriate credit by:
   - mentioning that your work is derived from work that is
-    Copyright © Software Carpentry, Data Carpentry, Library Carpentry,
-    or The Carpentries.
+    Copyright © Hugh Cross and Gert-Jan Jeunen at the University of Otago.
   - where practical, linking to the respective lesson program website
-    (https://software-carpentry.org/, https://datacarpentry.org, https://librarycarpentry.org, or
-    https://carpentries.org), provide a [link to the license][cc-by-human]
+    or provide a [link to the license][cc-by-human]
   - and indicate if changes were made. You may do so in any reasonable manner, but not in any way
     that suggests the licensor endorses you or your use.
 
@@ -47,10 +44,15 @@ Notices:
   rights such as publicity, privacy, or moral rights may limit how you
   use the material.
 
+## Style template
+
+The style template used is licenced from The Carpentries under [Creative Commons Attribution
+license][cc-by-human] and can be found at [https://github.com/carpentries/styles/](https://github.com/carpentries/styles/).
+
 ## Software
 
 Except where otherwise noted, the example programs and other software
-provided by Software Carpentry and Data Carpentry are made available under the
+provided are made available under the
 [OSI][osi]-approved
 [MIT license][mit-license].
 
