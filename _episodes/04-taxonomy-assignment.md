@@ -86,7 +86,7 @@ Looking at a long help command this way allows you to scroll up and down the hel
 >> ~~~bash
 >> module load eDNA
 >> 
->> cd ../taxonomy
+>> cd ~/obss_2021/edna/taxonomy/
 >>
 >> vsearch --sintax \
 >>  ../otus/<OTU_FILE> \
@@ -106,12 +106,10 @@ Looking at a long help command this way allows you to scroll up and down the hel
 {: .challenge}
 
 
-Now you are done. Save and close the file. Make the script executable and run it on the command line.
+Now you are done. Save and close the file. Then run it on the command line.
 
 ```
-chmod a+x classify_sintax.sh
-
-./classify_sintax.sh
+bash classify_sintax.sh
 ```
 
 ### 
