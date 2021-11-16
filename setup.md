@@ -19,6 +19,16 @@ A Unix shell is required. See [https://carpentries.github.io/workshop-template/#
 |cutadaptQC|||
 |QIIME2/2021.4|
 |vsearch||https://github.com/torognes/vsearch||
+
+
+R packages
+
+```r
+install.packages(c('phyloseq', 'tibble', 'ggplot2', 'dplyr',
+                    'tidyr', 'ape', 'vegan','stringr'))
+```
+
+
 ## Data
 
 The data is already set up and available for you on NeSI.
