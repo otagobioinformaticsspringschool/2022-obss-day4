@@ -45,9 +45,8 @@ crabs_v1.0.1 db_download -h
 
 Which provides us with the following output (see figure below).
 
-```
+
 ![Figure: db_download help information](../fig/db_download_help.png)
-```
 {: .output}
 
 ## Downloading sequence data
