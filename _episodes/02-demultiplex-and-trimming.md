@@ -140,11 +140,13 @@ Because there are a few options to add here, we will be running this program usi
 >>
 >> ~~~
 >> module load eDNA
+>> 
+>> cd ~/obss_2021/edna
 >>
 >> cutadaptQC \
->>  -m ../docs/sample_metadata.tsv \
->>  -r ../data/FTP103_S1_L001_R1_001.fastq.gz \
->>  -f ../data \
+>>  -m ./docs/sample_metadata.tsv \
+>>  -r ./data/FTP103_S1_L001_R1_001.fastq.gz \
+>>  -f ./data \
 >>  -t 4 \
 >>  -n fish_project
 >> ~~~
@@ -154,18 +156,10 @@ Because there are a few options to add here, we will be running this program usi
 
 
 
-
-In order to run this file, we need to make it *executable*. Assuming the name of your script is `trim_qc.sh`, in the terminal, use this command:
-
+Now, to run this script, in the terminal run it like this:
 
 ```bash
-$ chmod a+x trim_qc.sh
-```
-
-Now, to run this command, in the terminal run it like this:
-
-```bash
-$ ./trim_qc.sh
+$ bash trim_qc.sh
 ```
 
 If it works, then you should see the outputs begin to be generated. This will take a a minute or two to run. While this is running, in the Folder tab, you can navigate over to the data folder, where you should see new subfolders with the trimmed fastq and fasta files.
@@ -189,14 +183,8 @@ In the terminal, we can have a peek at some of the other files:
 ```bash
 $ cd ../data/fastq
 
-$ head -12 AM1_trim.fastq
+$ head -n 12 AM1_trim.fastq
 ```
-
-
-
-
-
-
 
 
 {% include links.md %}

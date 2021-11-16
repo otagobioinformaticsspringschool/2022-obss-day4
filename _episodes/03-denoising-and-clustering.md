@@ -32,7 +32,7 @@ For this workshop, we will follow the clustering pathway, since most people are 
 
 Prior to clustering or denoising, we need to dereplicate our data into unique sequences. Since metabarcoding data is based on an amplification method, the same starting DNA molecule can be sequenced multiple times. In order to reduce file size and computational time, it is convenient to combine these duplicated sequences as one and retain information on how many were combined. Additionally, we will remove sequences that only occur once in our data and attribute them to sequence and PCR error. Lastly, we will sort the sequences based on abundance.
 
-For the first step, we will combine all of the fasta files into a single file. In the terminal, navigate to the `/data/fasta` folder:
+For the first step, we will combine all of the fasta files into a single file. In the terminal, navigate to the `data/fasta/` folder:
 
 ```bash
 $ cd ~/obss_2021/edna/data/fasta
@@ -47,16 +47,10 @@ $ cat *.fasta > combined.fasta
 
 
 
-The next commands we will run through bash scripts, as we did with the demultiplexing and trimming. Navigate back to the `/scripts` folder and create a new script. Save this as `dereplicate_seqs.sh`
+The next commands we will run through bash scripts, as we did with the demultiplexing and trimming. Navigate back to the `scripts/` folder and create a new script. Save this as `dereplicate_seqs.sh`
 
 ```bash
-$ cd ../scripts
-```
-
-Remember to add the *shebang* to the first line of the script
-
-```
-#!/bin/bash
+$ cd ~/obss_2021/edna/scripts
 ```
 
 For this and the next scripts, we will use the program <a href="https://github.com/torognes/vsearch" target="_blank" rel="noopener noreferrer"><b>VSEARCH</b></a>, so read from the `envs.sh` file as you did in the previous script.
@@ -86,14 +80,10 @@ Note how the second command uses as input the output of the first command.
 
 
 
-
-
-Remember to run the script, you have to make it executable and run it, as with the `trim_qc.sh` script
+Remember to run the script, we use `bash`, as with the `trim_qc.sh` script
 
 ```bash
-$ chmod a+x dereplicate_seqs.sh
-
-$ ./dereplicate_seqs.sh
+$ bash dereplicate_seqs.sh
 ```
 
 
