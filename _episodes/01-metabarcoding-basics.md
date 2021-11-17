@@ -163,6 +163,7 @@ Your `edna` folder is located in `~/obss_2021/`. It has the following subfolders
 - scripts/
 - plots/
 - notebooks/
+- references/
 
 Most of these are empty, but by the end of the course they will be full of the results of your analysis. 
 
