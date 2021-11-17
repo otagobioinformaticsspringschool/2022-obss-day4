@@ -319,7 +319,6 @@ scomb
     otu_table()   OTU Table:         [ 3 taxa and 11 samples ]
     sample_data() Sample Data:       [ 11 samples by 8 sample variables ]
     tax_table()   Taxonomy Table:    [ 3 taxa by 8 taxonomic ranks ]
-    phy_tree()    Phylogenetic Tree: [ 3 tips and 2 internal nodes ]
 ```
 {: .output}
 
@@ -387,7 +386,6 @@ The output is still a Phyloseq object:
     otu_table()   OTU Table:         [ 33 taxa and 6 samples ]
     sample_data() Sample Data:       [ 6 samples by 8 sample variables ]
     tax_table()   Taxonomy Table:    [ 33 taxa by 8 taxonomic ranks ]
-    phy_tree()    Phylogenetic Tree: [ 33 tips and 32 internal nodes ]
 ```
 {: .output}
 

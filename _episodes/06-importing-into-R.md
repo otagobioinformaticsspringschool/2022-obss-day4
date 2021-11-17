@@ -239,35 +239,6 @@ Create a Phyloseq sample_data-class
 META <- sample_data(metadata)
 ```
 
-## Import the phylogenetic tree
-
-
-```r
-otu_tree <- read.tree(file='../otus/otu_rooted_tree.nwk')
-otu_tree
-```
-
-
-    
-    Phylogenetic tree with 33 tips and 32 internal nodes.
-    
-    Tip labels:
-      OTU.33, OTU.8, OTU.21, OTU.29, OTU.17, OTU.16, ...
-    Node labels:
-      root, , 0.870, 0.647, 0.637, 0.965, ...
-    
-    Rooted; includes branch lengths.
-
-
-
-```r
-## Let's have a look at the tree
-plot(otu_tree)
-```
-
-
-![png](../fig/output_20_0.png)
-
 
 ## Create a Phyloseq object
 
@@ -275,8 +246,8 @@ Now that we have all the components, it is time to create a Phyloseq object
 
 
 ```r
-pseq <- phyloseq(OTU,TAX,META,otu_tree)
-pseq
+physeq <- phyloseq(OTU,TAX,META)
+physeq
 ```
 
 ```
@@ -284,7 +255,6 @@ pseq
     otu_table()   OTU Table:         [ 33 taxa and 11 samples ]
     sample_data() Sample Data:       [ 11 samples by 8 sample variables ]
     tax_table()   Taxonomy Table:    [ 33 taxa by 8 taxonomic ranks ]
-    phy_tree()    Phylogenetic Tree: [ 33 tips and 32 internal nodes ]
 ```
 {: output}
 
@@ -296,7 +266,7 @@ Now that we have our Phyloseq object, we will take a look at it. One of the firs
 
 
 ```r
-rarecurve(t(otu_table(pseq)), step=50, cex=1)
+rarecurve(t(otu_table(physeq)), step=50, cex=1)
 ```
 
 
@@ -306,7 +276,7 @@ rarecurve(t(otu_table(pseq)), step=50, cex=1)
 
 ```r
 # create a bar plot of abundance
-plot_bar(pseq)
+plot_bar(physeq)
 ```
 
 
@@ -315,8 +285,8 @@ plot_bar(pseq)
 
 
 ```r
-print(min(sample_sums(pseq)))
-print(max(sample_sums(pseq)))
+print(min(sample_sums(physeq)))
+print(max(sample_sums(physeq)))
 ```
 
 ```
@@ -332,7 +302,7 @@ From the initial look at the data, it is obvious that the sample AS3 has about t
 we will rarefy the data around 90% of the lowest sample
 
 ```r
-pseq.rarefied <- rarefy_even_depth(pseq, rngseed=1, sample.size=0.9*min(sample_sums(pseq)), replace=F)
+physeq.rarefied <- rarefy_even_depth(physeq, rngseed=1, sample.size=0.9*min(sample_sums(physeq)), replace=F)
 ```
 
 ```
@@ -350,7 +320,7 @@ pseq.rarefied <- rarefy_even_depth(pseq, rngseed=1, sample.size=0.9*min(sample_s
 
 ```r
 # now plot the rarefied version
-plot_bar(pseq.rarefied)
+plot_bar(physeq.rarefied)
 ```
 
 
@@ -367,13 +337,13 @@ Also, below are a couple of examples of saving graphs. There are many options fo
 
 ```r
 # save the phyloseq object
-saveRDS(pseq, 'fish_phyloseq.rds')
+saveRDS(physeq, 'fish_phyloseq.rds')
 ```
 
 
 ```r
 # also save the rarefied version
-saveRDS(pseq.rarefied, 'fish_phyloseq_rarefied.rds')
+saveRDS(physeq.rarefied, 'fish_phyloseq_rarefied.rds')
 ```
 
 To later read the Phyloseq object into your R session:
@@ -397,7 +367,7 @@ print(physeq)
 # open a pdf file
 pdf('species_richness_plot.pdf')
 # run the plot, or add the saved one
-rarecurve(t(otu_table(pseq)), step=50, cex=1.5, col='blue',lty=2)
+rarecurve(t(otu_table(physeq)), step=50, cex=1.5, col='blue',lty=2)
 # close the pdf
 dev.off()
 ```
@@ -410,7 +380,7 @@ dev.off()
 ```r
 # there are other graphic formats that you can use
 jpeg("species_richness_plot.jpg", width = 800, height = 800)
-rarecurve(t(otu_table(pseq)), step=50, cex=1.5, col='blue',lty=2)
+rarecurve(t(otu_table(physeq)), step=50, cex=1.5, col='blue',lty=2)
 dev.off()
 ```
 
