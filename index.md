@@ -6,7 +6,9 @@ permalink: index.html  # Is the only page that doesn't follow the pattern /:path
 
 > ## Prerequisites
 >
-> FIXME
+> All pre-requisites are taken care of if you are using this lesson at the Otago Bioinformatics Spring School 2021.
+>
+> Please see the [setup](setup.md) instructions if you wish to undertake this workshop on your own computer.
 {: .prereq}
 
 ## About
