@@ -184,20 +184,37 @@ This program will run very fast, so you can run it on the command line. Check th
 
 <br><br>
 
->## Extra exercise: run BLAST taxonomy assignment
+>## Extra exercise: use IDTaxa for taxonomy assignment
 >
-> Qiime2 has two other methods for taxonomy assignment. If you have some time, you can run BLAST as well to find taxonomy. 
+> There are many methods available for taxonomy assignment. Another popular option is <a href="http://www2.decipher.codes/Classification.html" target="_blank" rel="noopener noreferrer"><b>IDTaxa</b></a>. IDTaxa is a variant of the RDP machine learning approach, discussed above. 
+> 
+> Write a bash script to run this program. 
+> 
+> Guide:
 >
-> https://docs.qiime2.org/2021.4/plugins/available/feature-classifier/classify-consensus-blast/
->
-> Hints:
->
-> - You will not use the trained data, instead for `--i-reference-reads` use the fasta.qza, and for `--i-reference-taxonomy` use the taxon.qza file. Both are in the reference folder
->
-> - Add the options `--p-perc-identity` and `--p-query-cov`, and try increasing the value for these. 
->
-> - Run it as a Slurm job. Increase the time given to 30 minutes.
+> - IDTaxa requires the reference data to be trained. We have made a pre-trained classifier available for you in the `/references` subfolder. 
+> - IDTaxa is a R package from the Bioconductor library, so you will need to load the Bioconductor R bundle, which will also load R:
+>  `module load R-bundle-Bioconductor/3.13-gimkl-2020a-R-4.1.0`
+> - To run this on the command line, there is an R script in the `/scripts` subfolder that will run IDTaxa, and then convert the output to a table: `run_IDTaxa.R` 
+> - To run a R script from the command line or a bash script, you need to use the command `RScript --vanilla`, followed by the name of the script.
+> - For this R script, the arguments come after the script and have to be entered in this order:
+>  `Rscript --vanilla run_IDTaxa.R <IDTaxa_classifier> <otu_fasta> <output_file>`
+> 
+>> ## Solution
+>> 
+>> Your script should contain these lines (assuming you are running it from the scripts folder)
+>> 
+>> ```
+>> Rscript --vanilla \
+>>   run_IDTaxa.R \
+>>   ../references/fish_lRNA_idtaxa_classifier.rds \
+>>   ../otus/otus.fasta \
+>>   ../taxonomy/idtaxa_test1.tsv
+>> ```
+>> 
+>> Note that you do not have to split this across separate lines with a `\`, but it helps to read the code.
+>> 
+> {: .solution}
 {: .challenge}
-
 
 {% include links.md %}

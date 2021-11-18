@@ -267,5 +267,32 @@ qiime diversity core-metrics-phylogenetic \
   --output-dir core-metrics-phylogenetic-results
 ```
 
+### Exporting your Qiime analysis out of Qiime
+
+Qiime has many many tools that make it easy to analyse your data, but you may also want to use other programs, or analyse your outputs using Phyloseq or another statistical package in R or Python. Fortunately, Qiime provides a tool to export almost file you create in its format. 
+
+The Qiime export tool only allows you to export to a folder, so the best way is to first create a subfolder called `exports`:
+
+```
+mkdir exports
+```
+
+Then you will export whatever file you need to this subfolder:
+
+```
+qiime tools export \
+  --input-path INPUT-FILE \
+  --output-path exports
+```
+
+Qiime will export this file to the exports subfolder and give it a standard name. For example, if you export the results of a qiime taxonomy assignment, it will give it the name `taxonomy.tsv`. We advise changing this to a name specific to your analysis using bash `mv`:
+
+```
+mv exports/taxonomy.tsv qiime_tax_assign_table.tsv
+```
+
+
+
+
 
 {% include links.md %}
