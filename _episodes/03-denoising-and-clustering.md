@@ -53,10 +53,10 @@ The next commands we will run through bash scripts, as we did with the demultipl
 $ cd ~/obss_2021/edna/scripts
 ```
 
-For this and the next scripts, we will use the program <a href="https://github.com/torognes/vsearch" target="_blank" rel="noopener noreferrer"><b>VSEARCH</b></a>, so read from the `envs.sh` file as you did in the previous script.
+For this and the next scripts, we will use the program <a href="https://github.com/torognes/vsearch" target="_blank" rel="noopener noreferrer"><b>VSEARCH</b></a>, so read from the `eDNA.sh` file as you did in the previous script.
 
 ```bash
-source envs.sh
+source eDNA.sh
 ```
 
 We will create and keep our OTU files in a separate folder, so add a line to navigate to this folder:
@@ -112,7 +112,7 @@ vsearch --cluster_size sorted_combined.fasta --centroids centroids.fasta --sizei
 
 vsearch --uchime3_denovo centroids.fasta --sizein --fasta_width 0 --nonchimeras otus.fasta --relabel OTU.
 
-vsearch --usearch_global combined.fasta --db otus.fasta --id 0.9 --otutabout otu_frequency_table.tsv
+vsearch --usearch_global combined.fasta --db otus.fasta --id 0.97 --otutabout otu_frequency_table.tsv
 ```
 
 > ### Tip
@@ -140,11 +140,11 @@ vsearch --usearch_global combined.fasta --db otus.fasta --id 0.9 --otutabout otu
 > Make a new script to run clustering. It is similar to `cluster.sh`, except you do not use the `vsearch --cluster_unoise` command. Instead you will use:
 > 
 > ```
-> vsearch --cluster_unoise sorted_combined.fasta --sizein --sizeout --fasta_width 0 --centroids centroids.fasta
+> vsearch --cluster_unoise sorted_combined.fasta --sizein --sizeout --fasta_width 0 --centroids centroids_unoise.fasta
 > ```
 > 
 > You will still need the commands to remove chimeras and create a frequency table. 
-> Make sure to change the names of the files so that you are making a **new** frequency table. 
+> Make sure to change the names of the files so that you are making a **new** frequency table and OTU fasta file (maybe call it `asvs.fasta`). 
 > If you leave the old name in, it will be overwritten when you run this script. 
 > 
 > Give it a try and compare the number of OTUs between clustering and denoising outputs. 

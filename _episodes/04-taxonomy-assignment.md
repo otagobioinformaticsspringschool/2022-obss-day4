@@ -112,7 +112,6 @@ Now you are done. Save and close the file. Then run it on the command line.
 bash classify_sintax.sh
 ```
 
-### 
 
 Have a look at the output file. Find the file in the taxonomy folder and double click to open it in Jupyter. You will see it is divided into two main parts. The first includes the name of each rank (e.g. *p:Chordata* to indicate the phylum Chordata), followed by the confidence for the assignment at that rank in parentheses. The second section, which follows the *+*, has only the name of each rank and includes only those ranks whose confidence is above the `--sintax_cutoff` parameter used. 
 
@@ -171,7 +170,6 @@ You will see the options:
 ```
 -i file to convert
 -o output table
--f input format
 ```
 {: .output}
 
@@ -205,9 +203,11 @@ This program will run very fast, so you can run it on the command line. Check th
 >> Your script should contain these lines (assuming you are running it from the scripts folder)
 >> 
 >> ```
+>> module load R-bundle-Bioconductor/3.13-gimkl-2020a-R-4.1.0
+>> 
 >> Rscript --vanilla \
 >>   run_IDTaxa.R \
->>   ../references/fish_lRNA_idtaxa_classifier.rds \
+>>   ../references/fish_lrRNA_idtaxa_classifier.rds \
 >>   ../otus/otus.fasta \
 >>   ../taxonomy/idtaxa_test1.tsv
 >> ```

@@ -137,7 +137,7 @@ Now we will import the taxonomy table. This is the output from the Sintax analys
 
 
 ```r
-import_taxa <- read.table('../taxonomy/otu_taxonomy.tsv',header=TRUE,sep='\t',row.names=1)
+import_taxa <- read.table('../taxonomy/sintax_tax.tsv',header=TRUE,sep='\t',row.names=1)
 head(import_taxa)
 ```
 
