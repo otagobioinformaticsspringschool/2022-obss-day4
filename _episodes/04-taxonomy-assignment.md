@@ -16,16 +16,20 @@ keypoints:
 
 # Taxonomy Assignment: Different Approaches
 
-There are three basic approaches to taxonomy classification (and endless variations of each of these): Global alignment, local alignment, and Naive Bayes, or machine learning approaches in general. 
+There are four basic strategies to taxonomy classification (and endless variations of each of these): **sequence similarity** (SS), **sequence composition** (SC), **phylogenetic** (Ph), and probabilistic (Pr) (<a href="https://onlinelibrary.wiley.com/doi/epdf/10.1111/1755-0998.13407" target="_blank" rel="noopener noreferrer"><b>Hleap et al., 2021</b></a>).
+    
+
+![alt text](../fig/four_strategies.png)
+
+
+Of the four, the first two are those most often used for taxonomy assignment. For further comparison of these refer to <a href="https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0470-z" target="_blank" rel="noopener noreferrer"><b>this paper</b></a>.
 
 ![alt text](../fig/methodComparison.png)
 
-for a discussion of them see the <a href="https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0470-z" target="_blank" rel="noopener noreferrer"><b>paper</b></a>.
 
+## Aligment-Based Methods (SS)
 
-## Aligment-Based Methods
-
-BLAST is one of the most common methods of searching DNA sequences. BLAST is an acronym for Basic Local Alignment Search Tool. It is called this because it looks for any short, matching sequence, or *local alignments*, with the reference. This is contrasted with a *global alignment*, which tries to find the best match across the entirety of the sequence.  
+All sequence similarity methods use global or local alignments to directly search a reference database for partial or complete matches to query sequences. BLAST is one of the most common methods of searching DNA sequences. BLAST is an acronym for Basic Local Alignment Search Tool. It is called this because it looks for any short, matching sequence, or *local alignments*, with the reference. This is contrasted with a *global alignment*, which tries to find the best match across the entirety of the sequence.  
 
 
 ![alt text](../fig/globalVlocal_image.png)
@@ -38,17 +42,18 @@ Though BLAST is widely used, it is not necessarily the best way to search for ma
 
 ## Using Machine Learning to Assign Taxonomy
 
-Another way to assign taxonomy utilises machine learning algorithms. 
+Sequence composition methods utilise machine learning algorithms to extract compositional features (e.g., nucleotide frequency patterns) before building a model that links these profiles to specific taxonomic groups. 
 
 ![alt text](../fig/machineLearningExamples.png)
 
 <br><br>
 
 
-
 ## Use the program Sintax to classify our OTUs
 
-The program <a href="https://www.drive5.com/usearch/manual/cmd_sintax.html" target="_blank" rel="noopener noreferrer"><b>Sintax</b></a> is similar to the Naive Bayes classifier used in Qiime and other programs, but is simplified and can run much faster. Nevertheless, we have found it as accurate as Naive Bayes for the fish dataset we are using in this workshop. As with the previous steps, we will be using a bash script to run the classification. As before, we will use VSEARCH to run Sintax.
+The program <a href="https://www.drive5.com/usearch/manual/cmd_sintax.html" target="_blank" rel="noopener noreferrer"><b>Sintax</b></a> is similar to the Naive Bayes classifier used in Qiime and other programs, in that small 8 bp kmers are used to detect patterns in the reference database, but instead of frequency patterns, k-mer similarity is used to identify the top taxonomy, so there is no need for training (<a href="https://www.drive5.com/usearch/manual/sintax_algo.html" target="_blank" rel="noopener noreferrer">Here is a description of the Sintax algorithm</a>). Because of this, it is simplified and can run much faster. Nevertheless, we have found it as accurate as Naive Bayes for the fish dataset we are using in this workshop.
+
+As with the previous steps, we will be using a bash script to run the classification. As before, we will use VSEARCH to run Sintax.
 
 Go to the `scripts` folder and create a file called *classify_sintax.sh*, using either Nano (`nano classify_sintax.sh`) or from the Launcher in Jupyter. 
 
