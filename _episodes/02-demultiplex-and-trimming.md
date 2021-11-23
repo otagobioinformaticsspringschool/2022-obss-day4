@@ -80,15 +80,17 @@ The program, `cutadaptQC`, will read the primer and barcode sequences from the s
 
 
 
-As with other programs you have seen, this program has options that you view with the `-h` argument:
+As with other programs you have seen, this program has options that you view with the `-h` argument. Before we can view the help documentation, we will need to navigate to the scripts folder and `source` the `eDNA.sh` file. This will load the module in our environment.
 
 ```bash
+cd ../scripts/
+source eDNA.sh
 cutadaptQC -h
 ```
 
 ```
-usage: metapipe trim [-h] [-m METADATAFILE] [-r FASTQ] [-f DATAFOLDER]
-                     [-l MIN_LENGTH] [-n PROJECTNAME] [-t THREADS]
+usage: cutadaptQC [-h] [-m METADATAFILE] [-r FASTQ] [-f DATAFOLDER] [-l MIN_LENGTH] [-x MAX_LENGTH] [-a MAXN]
+                  [-e ERROR] [-n PROJECTNAME] [-t THREADS]
 
 Run cutadapt to demultiplex and quality control raw sequence data
 
@@ -104,6 +106,12 @@ arguments:
                         Folder to process sequence data
   -l MIN_LENGTH, --min_length MIN_LENGTH
                         [OPTIONAL] minimum length for reads (default:150)
+  -x MAX_LENGTH, --max_length MAX_LENGTH
+                        [OPTIONAL] maximum length for reads (default:300)
+  -a MAXN, --max_n MAXN
+                        [OPTIONAL] maximum number of Ns in sequence (default:0)
+  -e ERROR, --error ERROR
+                        [OPTIONAL] maximum expected error value (default:1.0)
   -n PROJECTNAME, --name PROJECTNAME
                         [OPTIONAL] Name of project (default:"fish")
   -t THREADS, --threads THREADS
@@ -115,31 +123,40 @@ arguments:
 Because there are a few options to add here, we will be running this program using a *bash script*, As we have done on Day 2 and 3 of this workshop. 
 
 > ## Build a script to run the program cutadaptQC
+>To start, we will navigate to the scripts folder if you are not there already. Then, we will open a new file by using the `nano` text editor that is incorporated into the terminal. When we run this command, it will open a new file wherein we can write our code.
 >
->To start, click on on the folder tab in the **upper left corner** of the browser. This will open the File Browser. Navigate to the *main* folder and then double click on the `scripts` folder. Then click on the arrow above the file view, to open a new Launcher tab. On the bottom of this tab, click on the *Text File* button. A new text file will open in the tab. 
+>```bash
+>nano trim_qc.sh
+>```
 >
 > Hints:
-> First, you need to tell the script what modules to load so all software can be accessed. 
+> First, you need to tell the script what modules to load so all software can be accessed. All of the modules that need to load are incorporated into the `eDNA.sh` file.
 >
 > ```bash
-> module load eDNA
+> source eDNA.sh
 > ```
 > 
-> Now, we can add the actual command to the script. When we ran the help command for this program, it gave us the options we need to input along with the name of > > the program. 
+> Now, we can add the actual command to the script. When we ran the help command for this program, it gave us the options we need to input along with the name of the program. There are several parameters we are required to fill in and others (with a default option) are only needed if the default values do not suit your specific requirements. I recommend following the options in the help documentation, to make sure that you do not forget to enter one of the parameters.
 >
-> For the `-r` option, you need to enter the name of the raw data file (make sure to include the path to the file):
+>`-m`: the program needs the metadata file to know which barcode and primer sequences to use for each sample. This file can be find in the `docs/` folder, so we need to remember to add the (relative) path.
 >
-> FTP103_S1_L001_R1_001.fastq.gz
+>`-r`: indicates the raw sequencing file (FTP103_S1_L001_R1_001.fastq.gz), which is located in the `data/` folder.
 >
-> The program will read from the sample metadata file to know which barcode and primer sequences to use for each sample. The `-m` option will tell the program     > which metadata file to use. As this file is in the `docs/` folder, remember to add the (relative) path:
+>`-f`: indicates the folder where all the processed files will be stored. Today, we will use the `data/` folder.
 >
-> Finally, we need to input the minimum length desired for the final sequences. For this project, the default of 150 is what we will use, but for practice we will > add this option.
+>`-n`: for the project name, we will use `fish_project`, given the sequencing data represents the fish diversity observed at Otago Harbour.
+>
+>`-t`: we can set the number of threads to 4.
+>
+> We can leave the default values for all other options, as the `minimum` and `maximum` length are within our amplicon range, Illumina sequencing data should not have `N` basecalls, and the `error rate` of 1.0 is a standard approach in processing metabarcoding data.
+>
+> We can exit out of `nano` by pressing `ctr+x`, followed by `y` and `enter` to save the file.
 >
 >> ## Solution
 >> Your script should look like this:
 >>
 >> ~~~
->> module load eDNA
+>> source eDNA.sh
 >> 
 >> cd ~/obss_2021/edna
 >>
@@ -147,8 +164,8 @@ Because there are a few options to add here, we will be running this program usi
 >>  -m ./docs/sample_metadata.tsv \
 >>  -r ./data/FTP103_S1_L001_R1_001.fastq.gz \
 >>  -f ./data \
->>  -t 4 \
 >>  -n fish_project
+>>  -t 4 \
 >> ~~~
 >>
 > {: .solution}
