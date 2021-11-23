@@ -61,10 +61,13 @@ and then use the `ls` command to see the contents of the subfolder
 $ ls -lh
 ```
 
+```
+-rwxrwx---+ 1 hugh.cross nesi02659 119M Nov 20 04:25 FTP103_S1_L001_R1_001.fastq.gz
+```
+{: .output}
+
 The `h` option in the ls command stands for *human readable*. This option will show the size of large files as MB (megabytes) or GB (gigabytes), instead of a long string of numbers representing the number of bytes.
 
-
-FTP103_S1_L001_R1_001.fastq.gz
 
 You remember on Day 2 we went over FastQC. On the course page there is an image from a FastQC sequence quality data run on this file. You will see that the file still has a lot of poor quality sequence that have to be removed.
 
