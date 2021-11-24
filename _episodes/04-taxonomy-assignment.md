@@ -34,9 +34,9 @@ All sequence similarity methods use global or local alignments to directly searc
 
 ![alt text](../fig/globalVlocal_image.png)
 
-<br>
 
-Though BLAST is widely used, it is not necessarily the best way to search for matching sequences in metabarcoding studies. 
+
+
 
 <br><br>
 
