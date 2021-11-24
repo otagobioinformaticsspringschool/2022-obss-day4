@@ -19,6 +19,22 @@ In this lesson there are several examples for plotting the results of your analy
 
 - The Micca pipeline has  <a href="https://micca.readthedocs.io/en/latest/phyloseq.html" target="_blank" rel="noopener noreferrer"><b>a good intro tutorial for Phyloseq</b></a>
 
+- Remember, if you are starting a new notebook, to set the working directory and read in the Phyloseq object:
+
+
+```R
+setwd(../plots)
+# load the packages
+library('phyloseq')
+library('tibble')
+library('ggplot2')
+library('ape')
+library('vegan')
+
+physeq <- readRDS('fish_phyloseq.rds')
+print(physeq)
+```
+
 
 ## Plotting taxonomy
 
@@ -128,7 +144,7 @@ For qualitative distance use the Jaccard method
 
 ```R
 jac_dist <- distance(physeq.rarefied, method = "jaccard", binary = TRUE)
-
+jac_dist
 ```
 
 ```
@@ -232,13 +248,13 @@ Phyloseq includes the `adonis` function to run a PERMANOVA to determine if OTUs 
 
 
 ```R
-adonis(quant_dist ~ sample_data(physeq.rarefied)$location)
+adonis(bc_dist ~ sample_data(physeq.rarefied)$location)
 ```
 
 
 ```
     Call:
-    adonis(formula = quant_dist ~ sample_data(physeq.rarefied)$location) 
+    adonis(formula = bc_dist ~ sample_data(physeq.rarefied)$location) 
     
     Permutation: free
     Number of permutations: 999
@@ -266,12 +282,12 @@ adonis(quant_dist ~ sample_data(physeq.rarefied)$location)
 >> ## Solution
 >> 
 >> ```R
->> adonis(quant_dist ~ sample_data(physeq.rarefied)$temperature)
+>> adonis(bc_dist ~ sample_data(physeq.rarefied)$temperature)
 >> ```
 >> 
 >> ```
 >>     Call:
->>     adonis(formula = quant_dist ~ sample_data(physeq.rarefied)$temperature) 
+>>     adonis(formula = bc_dist ~ sample_data(physeq.rarefied)$temperature) 
 >>     
 >>     Permutation: free
 >>     Number of permutations: 999
@@ -540,7 +556,7 @@ tax_table(phyMerge)
 >> ```R
 >> phyMergeFAM <- tax_glom(physeq, taxrank = 'family',NArm = T)
 >> 
->> tax_table(phyMerge1)
+>> tax_table(phyMergeFAM)
 >> ```
 >> 
 >> <table class="dataframe">

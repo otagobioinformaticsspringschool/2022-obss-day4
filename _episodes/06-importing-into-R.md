@@ -32,11 +32,8 @@ To start off, we will load the R libraries we will need
 library('phyloseq')
 library('tibble')
 library('ggplot2')
-library('dplyr')
-library('tidyr')
 library('ape')
 library('vegan')
-library('stringr')
 ```
 
 We will do the work in the 'plots' directory, so in R, set that as the working directory
@@ -81,10 +78,9 @@ head(import_table)
 </table>
 
 
-
+Now convert to a matrix for Phyloseq
 
 ```r
-# convert to a matrix for Phyloseq
 otumat <- as.matrix(import_table)
 head(otumat)
 ```
@@ -131,28 +127,15 @@ head(OTU)
 
 
 
-## import the taxonomy table (exported from Qiime2)
+## Import the taxonomy table
 
 Now we will import the taxonomy table. This is the output from the Sintax analysis.
 
 
 ```r
-import_taxa <- read.table('../taxonomy/sintax_tax.tsv',header=TRUE,sep='\t',row.names=1)
+import_taxa <- read.table('../taxonomy/sintax_taxonomy.tsv',header=TRUE,sep='\t',row.names=1)
 head(import_taxa)
 ```
-
-Convert to a matrix:
-
-```R
-taxonomy <- as.matrix(import_taxa)
-```
-
-```
-    Warning message:
-    “Expected 7 pieces. Missing pieces filled with `NA` in 13 rows [9, 13, 15, 17, 25, 26, 27, 28, 29, 30, 31, 32, 33].”
-```
-{: .output}
-
 
 <table class="dataframe">
 <caption>A matrix: 6 × 8 of type chr</caption>
@@ -168,6 +151,14 @@ taxonomy <- as.matrix(import_taxa)
 	<tr><th scope=row>OTU.6</th><td>Eukaryota</td><td>Chordata</td><td>Actinopteri</td><td>Blenniiformes</td><td>Tripterygiidae</td><td>Forsterygion</td><td>Forsterygion_lapillum</td><td>1.0000000</td></tr>
 </tbody>
 </table>
+
+
+Convert to a matrix:
+
+```R
+taxonomy <- as.matrix(import_taxa)
+```
+
 
 Create a taxonomy class object
 
@@ -207,10 +198,9 @@ metadata
 </table>
 
 
-
+As we are not using the negative control, we will remove it
 
 ```r
-# As we are not using the negative control, we will remove it
 metadata <- metadata[1:11,1:8]
 tail(metadata)
 ```
@@ -258,6 +248,15 @@ physeq
 ```
 {: output}
 
+One last thing we will do is to convert two of the metadata variables from continuous to ordinal. This will help us graph these fields later
+
+```
+sample_data(physeq)$temperature <- as(sample_data(physeq)$temperature, "character")
+
+sample_data(physeq)$salinity <- as(sample_data(physeq)$salinity, "character")
+```
+
+
 <br>
 
 ## Initial data inspection
@@ -273,9 +272,9 @@ rarecurve(t(otu_table(physeq)), step=50, cex=1)
 ![png](../fig/output_24_0.png)
 
 
+create a bar plot of abundance
 
 ```r
-# create a bar plot of abundance
 plot_bar(physeq)
 ```
 
@@ -316,10 +315,9 @@ physeq.rarefied <- rarefy_even_depth(physeq, rngseed=1, sample.size=0.9*min(samp
 ```
 {: .output}
 
-
+now plot the rarefied version
 
 ```r
-# now plot the rarefied version
 plot_bar(physeq.rarefied)
 ```
 
@@ -334,32 +332,30 @@ You can save the Phyloseq object you just created, and then import it into anoth
 Also, below are a couple of examples of saving graphs. There are many options for this that you can explore to create publication-quality graphics of your results
 
 
+Save the phyloseq object
 
 ```r
-# save the phyloseq object
 saveRDS(physeq, 'fish_phyloseq.rds')
 ```
 
+Also save the rarefied version
 
 ```r
-# also save the rarefied version
 saveRDS(physeq.rarefied, 'fish_phyloseq_rarefied.rds')
 ```
 
 To later read the Phyloseq object into your R session:
 
+first the original
+
 ```R
-# first the original
 physeq <- readRDS('fish_phyloseq.rds')
 print(physeq)
 ```
 
 
 
-
 ### Saving a graph to file
-
-
 
 
 
@@ -375,10 +371,9 @@ dev.off()
 
 <strong>pdf:</strong> 2
 
-
+there are other graphic formats that you can use
 
 ```r
-# there are other graphic formats that you can use
 jpeg("species_richness_plot.jpg", width = 800, height = 800)
 rarecurve(t(otu_table(physeq)), step=50, cex=1.5, col='blue',lty=2)
 dev.off()
