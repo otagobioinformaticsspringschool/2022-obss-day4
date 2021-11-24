@@ -42,11 +42,50 @@ source eDNA.sh
 crabs_v1.0.1 -h
 ```
 
+```
+usage: crabs_v1.0.1 [-h] {db_download,db_import,db_merge,insilico_pcr,pga,assign_tax,dereplicate,seq_cleanup,geo_cleanup,visualization,tax_format} ...
+
+creating a curated reference database
+
+positional arguments:
+  {db_download,db_import,db_merge,insilico_pcr,pga,assign_tax,dereplicate,seq_cleanup,geo_cleanup,visualization,tax_format}
+
+optional arguments:
+  -h, --help            show this help message and exit
+```
+{: .output}
+
 As you can see, the help documentation shows you how to use the program, plus displays all the 11 functions that are currently available within CRABS. If you would want to display the help documentation of a function, we can type the following command:
 
 ```bash
 crabs_v1.0.1 db_download -h
 ```
+
+```
+usage: crabs_v1.0.1 db_download [-h] -s SOURCE [-db DATABASE] [-q QUERY] [-o OUTPUT] [-k ORIG] [-e EMAIL] [-b BATCHSIZE]
+
+downloading sequence data from online databases
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -s SOURCE, --source SOURCE
+                        specify online database used to download sequences. Currently supported options are: (1) ncbi, (2) embl, (3) mitofish, (4) bold, (5)
+                        taxonomy
+  -db DATABASE, --database DATABASE
+                        specific database used to download sequences. Example NCBI: nucleotide. Example EMBL: mam*. Example BOLD: Actinopterygii
+  -q QUERY, --query QUERY
+                        NCBI query search to limit portion of database to be downloaded. Example: "16S[All Fields] AND ("1"[SLEN] : "50000"[SLEN])"
+  -o OUTPUT, --output OUTPUT
+                        output file name
+  -k ORIG, --keep_original ORIG
+                        keep original downloaded file, default = "no"
+  -e EMAIL, --email EMAIL
+                        email address to connect to NCBI servers
+  -b BATCHSIZE, --batchsize BATCHSIZE
+                        number of sequences downloaded from NCBI per iteration. Default = 5000
+```
+{: .output}
+
 
 > ## Step 1: download sequencing data from online repositories
 >During this workshop, you will not have to run this command, since the file has been provided to you!
@@ -93,6 +132,15 @@ Let's look at the top 10 lines of the sequencing file to determine the format.
 ```bash
 head -10 ../references/ncbi_16S.fasta
 ```
+
+```
+>EF646645
+ATTTAGCTAGTAACAGCAAGCAAAACGCAATTTTAGTTTGCACCCCCGAAACTAAGTGAGCTACTTTAAAACAGCCATATGGGCCAACTCGTCTCTGTTGCAAAAGAGTGAGAAGATTTTTAAGTAGAAGTGACAAGCCTATCGAACTTAGAGATAGCTGGTTATTTGGGAAAAGAATATTAGTTCTGCCTTAAGCTTTTATTAACACCCTTCAAAGCAACTTAAGAGTTATTCAAATAAGGTACAGCCTATTTGATACAGGAAACAACCTAAAACATAGGGTAACGCTACCTACAATTTTTATAATTAAGTTGGCCTAAAAGCAGCCATCTTTTAAAAAGCGTCAAAGCTTAATTATTTAATAACAACAATCACAACAAAAATGCCAAACCCACCACTACTACCAAATAACTTTATATAATTATAAAAGATATTATGCTAAAACTAGTAATAAGAAAATGACTTTCTCCTAAATATAAGTGTAATGCAGAATAAACAAATCACTGCTAATTATTGTTTTTGATTAAATAGTAGCAACCTCTCTAGAAAACCCTACTATAAATAACATTAACCTAACACAAGAATATTACAGGAAAAATTAAAAG
+>EF646644
+ATTTAGCTAGTCAAAACAAGCAAAGCGTAACTTAAGTTTGCTTTCCCGAAACTAAGTGAGCTACTTTGAAACAGCCTTACGGGCCAACTCGTCTCTGTTGCAAAAGAGTGAGAAGATTTTTAAGTAGAAGTGAAAAGCCTATCGAACTTAGAGATAGCTGGTTATTTGGGAAAAGAATATTAGTTCTGCCTTAAGCCAAACAACACAGTTTAAAGTAACTTAAGAGTTATTCAAATAAGGTACAGCCTATTTGATACAGGAAACAACCTAGAGAGTAGGGTAACGTCATTTAAAACGTAATTAAGTTGGCCTAAAAGCAGCCATCTTTTAAAAAGCGTCAAAGCTTAATTATTTAATAATACTAATTTCAACAAAAATACAAAACCCACATTTAATACCAAATAACTTTATATAATTATAAAAGATATTATGCTAAAACTAGTAATAAGAAAAAGACTTTCTCCTAAATATAAGTGTAACGCAGAATAAACAAATTACTGCTAATTACTGTTCATGACTCAATAGTAGTAACCTCACTAGAAAACCCTACTAATTATAACATTAATCTAACACAAGAGTATTAC
+```
+{: .output}
+
 
 > ## Step 2: Extracting amplicon regions through *in silico* PCR analysis
 >Once we have downloaded the sequencing data, we can start with a first curation step of the reference database. We will be extracting the amplicon region from each sequence through an *in silico* PCR analysis. With this analysis, we will locate the forward and reverse primer binding regions and extract the sequence in between. This will significantly reduce file sizes when larger data sets are downloaded, while also keeping only the necessary information.

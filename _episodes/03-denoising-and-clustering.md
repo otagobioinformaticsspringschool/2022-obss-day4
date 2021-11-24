@@ -35,7 +35,7 @@ Prior to clustering or denoising, we need to dereplicate our data into unique se
 Before we do all of this, we need to combine all of the fasta files into a single file. In the terminal, navigate to the `data/fasta/` folder:
 
 ```bash
-$ cd ../data/fasta
+$ cd ~/obss_2021/edna/data/fasta
 ```
 
 Now we will just concatenate all the fasta files into one using the `cat` command:
@@ -108,11 +108,33 @@ To check if everything executed properly, we can list the files that are in the 
 $ ls -ltr ../otus/
 ```
 
+```
+-rw-rw----+ 1 hugh.cross nesi02659 545795 Nov 24 03:52 derep_combined.fasta
+-rw-rw----+ 1 hugh.cross nesi02659 545795 Nov 24 03:52 sorted_combined.fasta
+```
+{: .output}
+
 We can also check how these commands have altered our files. Let's have a look at the `sorted_combined.fasta` file, by using the `head` command.
 
 ```bash
 $ head ../otus/sorted_combined.fasta
 ```
+
+```
+>Uniq.1;size=19583
+TTTAGAACAGACCATGTCAGCTACCCCCTTAAACAAGTAGTAATTATTGAACCCCTGTTCCCCTGTCTTTGGTTGGGGCG
+ACCACGGGGAAGAAAAAAACCCCCACGTGGACTGGGAGCACCTTACTCCTACAACTACGAGCCACAGCTCTAATGCGCAG
+AATTTCTGACCATAAGATCCGGCAAAGCCGATCAACGGACCG
+>Uniq.2;size=14343
+ACTAAGGCATATTGTGTCAAATAACCCTAAAACAAAGGACTGAACTGAACAAACCATGCCCCTCTGTCTTAGGTTGGGGC
+GACCCCGAGGAAACAAAAAACCCACGAGTGGAATGGGAGCACTGACCTCCTACAACCAAGAGCTGCAGCTCTAACTAATA
+GAATTTCTAACCAATAATGATCCGGCAAAGCCGATTAACGAACCA
+>Uniq.3;size=8755
+ACCAAAACAGCTCCCGTTAAAAAGGCCTAGATAAAGACCTATAACTTTCAATTCCCCTGTTTCAATGTCTTTGGTTGGGG
+```
+{: .output}
+
+
 
 > ## Study Questions
 >What do you think the following parameters are doing?

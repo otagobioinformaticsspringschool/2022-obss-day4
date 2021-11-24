@@ -167,7 +167,7 @@ Because there are a few options to add here, we will be running this program usi
 >>  -m ./docs/sample_metadata.tsv \
 >>  -r ./data/FTP103_S1_L001_R1_001.fastq.gz \
 >>  -f ./data \
->>  -n fish_project
+>>  -n fish_project \
 >>  -t 4 \
 >> ~~~
 >>
@@ -195,7 +195,7 @@ Once the script has finished, you should have five new subfolders in your data/ 
 
 The `trimmed/` subfolder has the fastq sequence files from which primers and barcode sequences have been removed. There is now one for each sample. The `fastq/` folder has the fastq sequence files files, in which each file has taken the corresponding trimmed file and run a quality filter and removed any sequences below the minimum length. The fasta files in the `fasta/` are from the fastq files, from which any quality information has been removed. The `fastq_qc` folder contains all the FastQC output, and the `{Project Name}_multiqc_report_data` folder (substitute your project name for `{Project Name}`).
 
-In addition to these folders, you also have a web file that is the multiQC report: `{Project Name}_multiqc_report.html`. Go ahead and double click on this file to open it. 
+In addition to these folders, you also have a web file that is the multiQC report: `{Project Name}_multiqc_report.html`. Go ahead and double click on this file to open it. Once opened, you will see what looks like a FastQC file, but one that has the combined results for all the files. In the upper part of the file, there is text that says `Trust HTML`. Click on this to see all the figures in the graph (This is a security precaution for Jupyter).
 
 
 In the terminal, we can have a peek at some of the other files:
@@ -203,8 +203,24 @@ In the terminal, we can have a peek at some of the other files:
 ```bash
 $ cd ../data/fastq
 
-$ head -n 12 AM1_trim.fastq
+$ head -n 12 AM1_filt.fastq
 ```
+
+```
+@AM1.1
+GAAAGGTAGACCCAACTACAAAGGTCCCCCAATAAGAGGACAAACCAGAGGGACTACTACCCCCATGTCTTTGGTTGGGGCGACCGCGGGGGAAGAAGTAACCCCCACGTGGAACGGGAGTACAACTCCTTGAACTCAGGGCCACAGCTCTAAGAAACAAAATTTTTGACCTTAAGATCCGGCAATGCCGATCAACGGACCG
++
+2E2AEHHFHFGGEGGEHFGHGHGCFFEGGEFDGHHEFFEFGGGFFFE1CGGGGFGCGHGHHGGECHFHFHHHGGHHGGGGFCGCCGFCCGGGGGGHHG0CGHHHDCFFCGEGBFFGDFD?DBBFFBFFFFFFFFFFFFFE?DDDEFFFFFFFFFFFFFFFFFFFFFFAEFFFFFFFFFFFFFF;BFFFFFFFFDBFDADCFF
+@AM1.2
+ACAAGGCAGCCCCACGTTAAAAAACCTAAATAAAGGCCTAAACTTACAAGCCCCTGCCCTTATGTCTTCGGTTGGGGCGACCGCGGGGTAAAAAATAACCCCCACGTGGAATGGGGGCATAAACACCCCCCCAAGTCAAGAGTTACATCTCCAGGCAGCAGAATTTCTGACCATAAGATCCGGCAGCGCCGATCAGCGAACCA
++
+HH4FHHGGGGFGDEEEHHFEFFFGGGHHFHHEFHHEFGHHHFGHHHHGFHGFHGHEEHHHHHHHHFHHFEEGGGGGGGCGCG/B?CFGFGHHHHGHHHHHHGGGGGGAADFG0B?DGGGGGFGGGFDFGFFFFF.BBFFFFFFFFFFFFFFFFFEEEDFF.BFFFFFFFEFFFFFFFFFFFFFFCFFFFFFFFFDFFFFFFFF
+@AM1.3
+ACAAGGCAGCCCCACGTTAAAAAACCTAAATAAAGGCCTAAACTTACAAGCCCCTGCCCTTATGTCTTCGGTTGGGGCGACCGCGGGGTAAAAAATAACCCCCACGTGGAATGGGGGCATAAACACCCCCCCAAGTCAAGAGTTACATCTCCAGGCAGCAGAATTTCTGACCATAAGATCCGGCAGCGCCGATCAGCGAACCA
++
+HH4AGHHGGDGEEGA?GHFGFHGFGFHGHHHFHHGGGFHGFGHHHFHHFFHFGGHEGFGFHHHGHFFHFGGGGGGGGGGGGG?@/CFGGGHHHHGHHHHHHGGGFGCCEDGG0FEFGGGGFBFGGFDDGCFAFF?FFFFFEFBBFFEFFFFFFFFFEFFF;BBFFFFFF/FFFFFFFFFFFFFFAFFFFFFFFFFFFFFFFFF
+```
+{: .output}
 
 
 {% include links.md %}

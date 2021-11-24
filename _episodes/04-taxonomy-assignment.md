@@ -57,6 +57,13 @@ As with the previous steps, we will be using a bash script to run the classifica
 
 Go to the `scripts` folder and create a file called *classify_sintax.sh*, using either Nano (`nano classify_sintax.sh`) or from the Launcher in Jupyter. 
 
+To access any program needed for this workshop, first source the eDNA.sh file
+
+```
+source eDNA.sh
+```
+
+
 The VSEARCH command has many functions and many options. In the command line, you can list these more easily using `less`:
 
 ```
@@ -94,10 +101,10 @@ Looking at a long help command this way allows you to scroll up and down the hel
 >> cd ~/obss_2021/edna/taxonomy/
 >>
 >> vsearch --sintax \
->>  ../otus/<OTU_FILE> \
->>  --db ../references/<REFERENCE-FILE> \
+>>  ../otus/otus.fasta \
+>>  --db ../references/aramoana_ref_db.fasta \
 >>  --sintax_cutoff 0.8 \
->>  --tabbedout <OUTPUT-FILE>
+>>  --tabbedout sintax_raw_taxonomy.tsv
 >> ~~~
 >> After the first line, we just put the name of the OTU file from the clustering lesson, remember the path is needed to point the program to where the file is
 >>
@@ -173,13 +180,30 @@ convert_tax2table.py -h
 You will see the options:
 
 ```
--i file to convert
--o output table
+usage: convert_tax2table.py [-h] [-i INPUT] [-o OUTPUT] [-f FORMAT]
+
+Convert taxonomy output to tabular format
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+arguments:
+  -i INPUT, --input_file INPUT
+                        Input taxonomy file to convert
+  -o OUTPUT, --output_table OUTPUT
+                        Name of output table
+  -f FORMAT, --format FORMAT
+                        Format of input file, options: "sintax","idtaxa","qiime"; default=sintax
 ```
 {: .output}
 
 This program will run very fast, so you can run it on the command line. Check the output. You should see a new table with each taxonomic rank in its own column. (**Hint:** if you name the output file with `.tsv` at the end, then it will open in Jupyter as a table.)
 
+```bash
+cd ../taxonomy
+
+convert_tax2table.py -i sintax_raw_taxonomy.tsv -o sintax_taxonomy.tsv
+```
 
 <br><br>
 
@@ -208,13 +232,14 @@ This program will run very fast, so you can run it on the command line. Check th
 >> Your script should contain these lines (assuming you are running it from the scripts folder)
 >> 
 >> ```
+>> module purge
 >> module load R-bundle-Bioconductor/3.13-gimkl-2020a-R-4.1.0
 >> 
 >> Rscript --vanilla \
 >>   run_IDTaxa.R \
 >>   ../references/fish_lrRNA_idtaxa_classifier.rds \
 >>   ../otus/otus.fasta \
->>   ../taxonomy/idtaxa_test1.tsv
+>>   ../taxonomy/idtaxa_taxonomy.tsv
 >> ```
 >> 
 >> Note that you do not have to split this across separate lines with a `\`, but it helps to read the code.
