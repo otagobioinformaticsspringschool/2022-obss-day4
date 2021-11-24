@@ -25,7 +25,7 @@ There are a number of software packages and pipelines that are available for eDN
 
 Some of the major programs for metabarcoding (those marked with a '*' will be covered in this workshop):
 
-- **Qiime2\*** is actually a collection of different programs and packages, all compiled into a single ecosystem so that all things can be worked together. On the <a href="https://docs.qiime2.org/2021.4/" target="_blank" rel="noopener noreferrer"><b>Qiime2 webpage</b></a> there is a wide range of tutorials and help. We will use this program to do the taxonomy analyses, but we will also show you how to easily import and export from this format so you can combine with other programs. 
+- **Qiime2\*** is actually a collection of different programs and packages, all compiled into a single ecosystem so that all things can be worked together. On the <a href="https://docs.qiime2.org/2021.11/" target="_blank" rel="noopener noreferrer"><b>Qiime2 webpage</b></a> there is a wide range of tutorials and help. We will use this program to do the taxonomy analyses, but we will also show you how to easily import and export from this format so you can combine with other programs. 
 
 - **Dada2** is a good program, run in the R language. There is good documentation and tutorials for this on its <a href="https://benjjneb.github.io/dada2/" target="_blank" rel="noopener noreferrer"><b>webpage</b></a>. You can actually run Dada2 within Qiime, but there are a few more options when running it alone in R. 
 
@@ -68,13 +68,13 @@ The first two data types have to do with your sample data: your sequence data, a
 
 ## Sequence files: fastq and fasta 
 
-The first files are fastq and fasta files. We will process these in the next section so we will have a look at these file types then.
+The first files are fastq and fasta files. You have seen many examples of this file type already this week.
 
 <br>
 
 ## Sample Metadata
 
-In Qiime the sample metadata is a simple tab-delimited file with information for each sample:
+The sample metadata will have different formats, depending on the programs used, but usually is a simple tab-delimited file with information for each sample:
 
 !["sample metadata (flat view)"](../fig/metadata_flat_view.png)
 
@@ -88,7 +88,14 @@ Now we will open the sample metadata file that we will use in this course. In Ju
 
 ## Taxonomy files
 
-The format of taxonomy files varies depending on the program you are running. In Qiime, there are two files: one is a fasta file with the reference sequences. 
+The format of taxonomy files varies depending on the program you are running. Most programs combine this information into a fasta file with the lineage information on the sequence id line. For example, in Sintax (run with VSEARCH), the program we will be using, the format looks like this:
+
+```
+>MW856870;tax=k:Eukaryota,p:Chordata,c:Actinopteri,o:Perciformes,f:Percidae,g:Percina,s:Percina_roanoka
+ACAAGACAGATCACGTTAAACCCTCCCTGACAAGGGATTAAACCAAATGAAACCTGTCCTAATGTCTTTGGTTGGGGCGACCGCGGGGAAACAAAAAACCCCCACGTGGA...
+```
+
+In Qiime, there are two files: one is a fasta file with the reference sequences. 
 
 ```
 >MW856870
@@ -101,18 +108,13 @@ This is accompanied by a taxonomy table that shows the taxonomic lineage for eac
 MW856870	d__Eukaryota;p__Chordata;c__Actinopteri;o__Perciformes;f__Percidae;g__Percina;s__Percina_roanoka
 ```
 
-Other formats combine this information into one file: a fasta file with the lineage information on the sequence id line. For example, the program Sintax:
 
-```
->MW856870;tax=k:Eukaryota,p:Chordata,c:Actinopteri,o:Perciformes,f:Percidae,g:Percina,s:Percina_roanoka
-ACAAGACAGATCACGTTAAACCCTCCCTGACAAGGGATTAAACCAAATGAAACCTGTCCTAATGTCTTTGGTTGGGGCGACCGCGGGGAAACAAAAAACCCCCACGTGGA...
-```
 
 <br>
 
 ## OTU files
 
-The next two information types come after clustering the sample sequences. The general Qiime2 terminology for these are the *representative sequences* and the *feature table*. The representative sequences (rep seqs) are also known as *Operational Taxonomic Units* (OTUs), *Amplicon Sequence Variants* (ASVs), *Exact Sequence Variants* (ESVs), or *zero radius OTUs* (zOTUs), depending on how they are produced (e.g. clustering or denoising). The last type is a table that specifies how many sequences of each rep seq are found in each sample.
+The next two information types come after clustering the sample sequences. The clustered sequences are also known as *Operational Taxonomic Units* (OTUs), *Amplicon Sequence Variants* (ASVs), *Exact Sequence Variants* (ESVs), or *zero radius OTUs* (zOTUs), depending on how they are produced (e.g. clustering or denoising). The last type is a frequency table that specifies how many sequences of each OTU are found in each sample. (The general Qiime2 terminology for these are the *representative sequences* and the *feature table*.)
 
 ![alt text](../fig/Slide02.png)
 
@@ -124,13 +126,13 @@ An additional important data type is the product of taxonomy classification of t
 ![alt text](../fig/Slide03.png)
 
 
-## Feature or frequency tables are key to metabarcoding analyses
+## Frequency tables are key to metabarcoding analyses
 
-The feature table ties together many sources of information in your analysis. It combines the per sample frequencies of each OTU, and to its taxonomic assignment, and these in turn can be linked to the sample metadata. 
+The frequency table (or feature table) ties together many sources of information in your analysis. It combines the per sample frequencies of each OTU, and to its taxonomic assignment, and these in turn can be linked to the sample metadata. 
 
 ![alt text](../fig/Slide11.png)
 
-Feature Tables are the centre of multiple downstream analyses
+Frequency Tables are the centre of multiple downstream analyses
 
 ![alt text](../fig/Slide12.png)
 
@@ -165,7 +167,11 @@ Your `edna` folder is located in `~/obss_2021/`. It has the following subfolders
 - notebooks/
 - references/
 
+<br>
+
 Most of these are empty, but by the end of the course they will be full of the results of your analysis. 
+
+<br>
 
 Before we begin, you need to copy a file to your scripts folder:
 
@@ -174,5 +180,6 @@ cp /nesi/project/nesi02659/obss_2021/resources/day4/eDNA.sh ~/obss_2021/edna/scr
 ```
 
 This file contains instructions to load all the paths and modules you will need for the rest of the day. You will see how it works in the next lesson.
+
 
 {% include links.md %}
