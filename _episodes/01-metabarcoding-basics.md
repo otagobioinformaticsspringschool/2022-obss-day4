@@ -167,4 +167,12 @@ Your `edna` folder is located in `~/obss_2021/`. It has the following subfolders
 
 Most of these are empty, but by the end of the course they will be full of the results of your analysis. 
 
+Before we begin, you need to copy a file to your scripts folder:
+
+```bash
+cp /nesi/project/nesi02659/obss_2021/resources/day4/eDNA.sh ~/obss_2021/edna/scripts
+```
+
+This file contains instructions to load all the paths and modules you will need for the rest of the day. You will see how it works in the next lesson.
+
 {% include links.md %}
