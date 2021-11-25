@@ -246,11 +246,11 @@ physeq
     sample_data() Sample Data:       [ 11 samples by 8 sample variables ]
     tax_table()   Taxonomy Table:    [ 33 taxa by 8 taxonomic ranks ]
 ```
-{: output}
+{: .output}
 
 One last thing we will do is to convert two of the metadata variables from continuous to ordinal. This will help us graph these fields later
 
-```
+```R
 sample_data(physeq)$temperature <- as(sample_data(physeq)$temperature, "character")
 
 sample_data(physeq)$salinity <- as(sample_data(physeq)$salinity, "character")
