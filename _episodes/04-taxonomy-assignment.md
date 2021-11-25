@@ -96,7 +96,7 @@ Looking at a long help command this way allows you to scroll up and down the hel
 >> ## Solution
 >> 
 >> ~~~bash
->> module load eDNA
+>> source ~/obss_2021/edna/scripts/eDNA.sh
 >> 
 >> cd ~/obss_2021/edna/taxonomy/
 >>
