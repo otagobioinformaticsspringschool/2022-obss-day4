@@ -104,7 +104,7 @@ ggplot(ab_melt, aes(fill = taxID, y = value, x = variable)) +
   geom_bar(position="fill", stat="identity")
 ```
 
-![png](../fig/sample_relative_abudance.png)
+![png](../fig/sample_relative_abundance.png)
 
 While we can start to see that there are some differences between sampling locations with regards to the observed fish, let's combine all samples within a sampling location to simplify the graph even further. We can do this by summing or averaging the reads.
 
