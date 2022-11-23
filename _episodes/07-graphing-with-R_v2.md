@@ -30,7 +30,7 @@ Before we can analyse our data, we need to import and format the files we create
 library('vegan')
 library('lattice')
 library('ggplot2')
-library('labdsv', lib.loc = "/nesi/project/nesi02659/obss_2022/R_lib") # if not on nesi remove the lib.loc...)
+library('labdsv', lib.loc = "/nesi/project/nesi02659/obss_2022/R_lib") # if not on nesi remove lib.loc="..."
 library('tidyr')
 library('tibble')
 library('reshape2')
