@@ -42,7 +42,7 @@ From the output, we can see that we have a single fastq file, the **R1_001.fastq
 
 The first thing we will do with our sequencing file is to look at the quality and make sure everything is according to the sequencing parameters that were chosen. The program we will be using for this is <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/" target="_blank" rel="noopener noreferrer"><b>FastQC (EMP)</b></a>. However, since you've already encountered this software program, we'll just focus on the output for now.
 
-<center><img src="../fig/fastqc_output_raw.png" alt="eDNA figure" width="800" height="800"/></center>
+<center><img src="../fig/fastqc_output_raw.png" alt="eDNA figure" width="75%"/></center>
 
 At this stage, we will be looking at the tabs *Basic Statistics* and *Per base sequence quality*. From this report, we can see that:
 
@@ -70,7 +70,7 @@ For example, traditionally prepared Illumina libraries (ligation and two-step PC
 
 This construction allows the Illumina software to identify the barcode sequences, which will result in the generation of a separate sequence file (or two for paired-end sequencing data) for each sample. This process is referred to as demultiplexing and is performed by the Illumina software.
 
-<center><img src="../fig/PEcell1.png" alt="eDNA figure" width="800" height="800"/></center>
+<center><img src="../fig/PEcell1.png" alt="eDNA figure" width="75%"/></center>
 
 When libraries are prepared using the single-step PCR method, the libraries are constructed slightly different (the colours mentioned refer to the setup described in the two-step approach):
 
